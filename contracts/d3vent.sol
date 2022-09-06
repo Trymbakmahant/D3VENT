@@ -1,4 +1,8 @@
     // todos and questions of what to do
+
+    // should we allow multiple organisers?
+    // should we allow an event wallet address so funds can be withdrawn to a non organiser address e.g. a multisig wallet?
+
     // setting up a voting mechanism where joiners can vote to call the event failed in some way 
     // and so prevent the organiser withdrawal, and can claim back their funds
     // a period up to which a joiner can unjoin and get a refund. after a certain point it's too late
@@ -37,6 +41,7 @@ contract d3vent {
     event CreatedEvent(uint indexed eventId, uint indexed eventDate, string indexed eventName);
     event Withdrawal(uint indexed eventId, address indexed organiser, uint balance);
     event JoinableSet(uint indexed eventId, bool isJoinable);
+    event NewOrganiser(uint indexed eventId, address newOrganiser);
        
     uint eventIds;
     uint immutable withdrawalBuffer;
@@ -75,12 +80,8 @@ contract d3vent {
         withdrawalBuffer = _withdrawalBuffer;
     }
     
-    modifier isAuthorised (uint _eventId) {
-        require(
-            msg.sender == events[_eventId].organiser || 
-            isAdmin[msg.sender], 
-            "not authroised"
-        );
+    modifier onlyOrganiser (uint _id) {
+        require(msg.sender == events[_id].organiser, "only organiser");
         _;
     }
 
@@ -114,16 +115,16 @@ contract d3vent {
     }
 
 
-    function setOrganiser(uint _eventId, address _newOrganiser) external {
+    function setOrganiser(uint _id, address _newOrganiser) external onlyOrganiser(_id) {
         // sanity checks
         require(_newOrganiser != address(0), "invalid: zero address");
-        require(_eventId <= eventIds, "invalid event id");
-        events[_eventId].organiser = _newOrganiser;
-        // emit event
+        require(_id <= eventIds, "invalid event id");
+        events[_id].organiser = _newOrganiser;
+        emit NewOrganiser(_id, _newOrganiser);
     }
 
 
-    function setEventIsJoinable(uint _id, bool _isJoinable) external {
+    function setEventIsJoinable(uint _id, bool _isJoinable) external onlyOrganiser(_id) {
         require(! events[_id].isJoinable, "already joinable");
         events[_id].isJoinable = _isJoinable;
         emit JoinableSet(_id, _isJoinable);
@@ -152,8 +153,7 @@ contract d3vent {
 
     
     //@dev event organiser can withdraw event balance
-    function organiserWithdrawal(uint _id) external {
-        require(msg.sender == events[_id].organiser, "only organiser");
+    function organiserWithdrawal(uint _id) external onlyOrganiser(_id) {
         require(block.timestamp >= events[_id].withdrawalDate + withdrawalBuffer, "withdrawal not allowed yet");
         
         uint _balance = eventBalances[_id];
