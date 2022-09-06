@@ -1,0 +1,21 @@
+.env
+node_modules
+coverage
+coverage.json
+typechain
+preprocess
+
+#Hardhat files
+cache
+artifacts
+
+#misc
+_info.md
+deploy.js
+hardhat.config.js
+package.json
+package-lock.json
+run.js
+tempCodeRunnerFile.js
+HH-README.md
+Lock.js

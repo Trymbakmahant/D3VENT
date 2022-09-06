@@ -37,15 +37,43 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.7;
 
+import {ByteHasher} from "./helpers/ByteHasher.sol";
+import {IWorldID} from "./interfaces/IWorldID.sol";
+
 contract d3vent {
     event CreatedEvent(uint indexed eventId, uint indexed eventDate, string indexed eventName);
     event Withdrawal(uint indexed eventId, address indexed organiser, uint balance);
     event JoinableSet(uint indexed eventId, bool isJoinable);
     event NewOrganiser(uint indexed eventId, address newOrganiser);
-       
+    event AdminAdded(address indexed newAdmin, address indexed addedBy);
+    event AdminDeleted(address indexed deletedAdmin, address indexed deletedBy);
+    event WorldcoinAddressChanged(address indexed newAddress, address indexed changedBy);
+
+
+    using ByteHasher for bytes;
+
+    /// @notice Thrown when attempting to reuse a nullifier
+    error InvalidNullifier();
+ 
+
+    /// @dev The World ID instance that will be used for verifying proofs
+    IWorldID internal immutable worldId;
+
+    /// @dev The World ID group ID (always 1)
+    uint256 internal immutable groupId = 1;
+
+    // using ByteHasher for bytes;
+
+    address private worldcoin;  //note: this is immutable in Worlcoin's example contract
+    /// @dev Whether a nullifier hash has been used already. Used to guarantee an action is only performed once by a single person
+    mapping(uint256 => bool) internal nullifierHashes;
+
+    
     uint eventIds;
     uint immutable withdrawalBuffer;
-
+    uint adminsCount;
+    
+    
     //uint immutable unjoinBuffer; // not implemented
     
     // not implemented
@@ -69,21 +97,90 @@ contract d3vent {
 
     event_[] events;
 
-
     mapping(uint => mapping(address => bool)) isJoined;    // eventId => userAddr => isJoined
     mapping(uint => mapping(address => uint)) joinerBalances;   // eventId => userAddr => balance
     mapping(uint => uint) eventBalances;    // eventId => event balance
     mapping(address => bool) isAdmin;   // admin address to bool
     
 
-    constructor (uint _withdrawalBuffer) {
+    constructor (uint _withdrawalBuffer, IWorldID _worldId) {
+        isAdmin[msg.sender] = true;
+        adminsCount = 1;
+        worldId = _worldId;
         withdrawalBuffer = _withdrawalBuffer;
     }
-    
+
+
+    function kill() external onlyAdmins {
+        selfdestruct(msg.sender);
+    }
+
+
+    function setWorldcoinAddress(address _addr) external onlyAdmins {
+        require(_addr != address(0), "invalid address 0");
+        worldcoin = _addr;
+        emit WorldcoinAddressChanged(_addr, msg.sender);
+    }
+
+    /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
+    /// @param root The root of the Merkle tree (returned by the JS widget).
+    /// @param nullifierHash The nullifier hash for this proof, preventing double signaling (returned by the JS widget).
+    /// @param proof The zero-knowledge proof that demostrates the claimer is registered with World ID (returned by the JS widget).
+    /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
+    function verifyAndExecute(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) public {
+        // First, we make sure this person hasn't done this before
+        if (nullifierHashes[nullifierHash]) revert InvalidNullifier();
+
+        // We now verify the provided proof is valid and the user is verified by World ID
+        worldId.verifyProof(
+            root,
+            groupId,
+            abi.encodePacked(signal).hashToField(),
+            nullifierHash,
+            abi.encodePacked(address(this)).hashToField(),
+            proof
+        );
+
+        // We now record the user has done this, so they can't do it again (proof of uniqueness)
+        nullifierHashes[nullifierHash] = true;
+
+        // Finally, execute your logic here, for example issue a token, NFT, etc...
+        // Make sure to emit some kind of event afterwards!
+
+    }
+
+
+
     modifier onlyOrganiser (uint _id) {
         require(msg.sender == events[_id].organiser, "only organiser");
         _;
     }
+
+
+    modifier onlyAdmins {
+        require(isAdmin[msg.sender], "only admins");
+        _;
+    }
+
+
+    function addAdmin(address _newAdmin) external onlyAdmins {
+        ++adminsCount;
+        isAdmin[_newAdmin] = true;
+        emit AdminAdded(_newAdmin, msg.sender);
+    }
+
+
+    function deleteAdmin(address _newAdmin) external onlyAdmins {
+        require(adminsCount > 1, "can't delete last admin");
+        --adminsCount;
+        isAdmin[_newAdmin] = false;
+    }
+
 
     // test parameters: "test event name","https://livepeer.org/123",1662994265,1000,1000000,false
     function createEvent(
