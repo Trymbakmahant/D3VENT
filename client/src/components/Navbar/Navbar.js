@@ -2,7 +2,6 @@ import classes from './Navbar.module.css';
 
 import {Link} from "react-router-dom";
 
-// import Button from '../UI/Button';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
