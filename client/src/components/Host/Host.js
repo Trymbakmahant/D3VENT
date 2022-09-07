@@ -15,8 +15,12 @@ const Host = () => {
     });
 
     const ctx = useContext(AppContext); //initialize ctx
-
-  currentDate = yyyy + '-' + mm + '-' + dd
+  
+    let currentDate = new Date();
+    const dd = String(currentDate.getDate()).padStart(2, '0');
+    const mm = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const yyyy = currentDate.getFullYear();  
+    currentDate = yyyy + '-' + mm + '-' + dd
 
 
     const timeFormatHandler = (event) => {
