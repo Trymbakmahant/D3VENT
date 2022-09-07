@@ -1,0 +1,28 @@
+.card{
+    width:20rem;
+    height:19rem;
+    border-radius: 20px;
+    border: 1px solid white;
+    margin: 3% 10%;
+}
+
+.card img {
+    height: 50%;
+    width: 100%;
+}
+
+.card h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 3% 0;
+}
+
+.card h2 {
+    text-align: center;
+    font-size: 1.1rem;
+    margin: 1% 0;
+}
+
+.btn{
+    margin: 2% 32%;
+}
