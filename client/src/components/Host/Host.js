@@ -72,7 +72,7 @@ const Host = () => {
 
     return (
         <div>
-            <form onSubmit={formSubmitHandler}>
+            <form className = 'Form1' onSubmit={formSubmitHandler}>
                 <Input type = "text" label = "Event Name" placeholder = "Enter your event name" inputChange = {inputHandler}/>
                 <Input type = "text" label = "Ticket price" placeholder = "Enter ticket price(in wei)" inputChange = {inputHandler}/>
                 <Input type = "text" label = "Capacity" placeholder = "How many people can join" inputChange = {inputHandler}/>
