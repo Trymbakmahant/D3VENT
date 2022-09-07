@@ -12,6 +12,7 @@ artifacts
 #misc
 _info.md
 deploy.js
+deployAddressesLog.txt
 hardhat.config.js
 package.json
 package-lock.json
@@ -19,3 +20,6 @@ run.js
 tempCodeRunnerFile.js
 HH-README.md
 Lock.js
+
+# Project specific
+build/zk-files
