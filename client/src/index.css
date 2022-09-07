@@ -15,3 +15,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.Form1{
+  justify-content: center;
+  align-items: center;
+  margin-left: 40%;
+}
+.btn{
+  margin-left: 90px;
+  margin-top:25px;
+}
