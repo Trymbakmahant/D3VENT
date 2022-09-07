@@ -8,7 +8,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Paths from "./Paths/Paths";
 
 function App() {
-
   const { chains, provider } = configureChains(
     [chain.mainnet, chain.polygon, chain.polygonMumbai, chain.rinkeby, chain.optimism, chain.arbitrum],
     [
@@ -26,7 +25,8 @@ function App() {
     autoConnect: true,
     connectors,
     provider
-  })
+  });
+
 
   return (
     <WagmiConfig client = {wagmiClient}>
