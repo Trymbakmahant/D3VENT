@@ -16,7 +16,9 @@ const Navbar = () => {
         connector: new InjectedConnector(),
     });
 
-    ctx.sharedState.setAddress(address);
+    if(address){
+        ctx.sharedState.setAddress(address);
+    }
 
     const activeStyle = {
         borderBottom: "2px solid white",

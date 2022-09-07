@@ -1,35 +1,64 @@
-import { useNavigate } from "react-router-dom";
+import EventCard from "../UI/EventCard";
 
 const DUMMY_HOSTED = [
-    {
-        name: 'Dummy event',
-        eventId: 1,
-        price: '1 Ether',
-        capacity: 500,
-        numJoined: 100,
-        date: '1-10-2022',
-        time: '10 AM'
-    }
+  {
+    name: "Dummy event",
+    eventId: 1,
+    price: "1 Ether",
+    capacity: 500,
+    numJoined: 100,
+    date: "1-10-2022",
+    time: "10 AM",
+  },
+  {
+    name: "Dummy event2",
+    eventId: 2,
+    price: "1 Ether",
+    capacity: 500,
+    numJoined: 96,
+    date: "1-10-2022",
+    time: "10 AM",
+  },
+  {
+    name: "Dummy event3",
+    eventId: 3,
+    price: "1 Ether",
+    capacity: 500,
+    numJoined: 100,
+    date: "1-10-2022",
+    time: "10 AM",
+  },
+  {
+    name: "Dummy even4",
+    eventId: 4,
+    price: "1 Ether",
+    capacity: 500,
+    numJoined: 100,
+    date: "1-10-2022",
+    time: "10 AM",
+  },
+  {
+    name: "Dummy even5",
+    eventId: 5,
+    price: "1 Ether",
+    capacity: 500,
+    numJoined: 100,
+    date: "1-10-2022",
+    time: "10 AM",
+  }
+];
 
-]
+const HostedEvents = () => {
 
-const HostedEvents = () =>{
-    const navigate = useNavigate();
 
-    const redirectToEventHandler = () =>{
-        const path = `/hosted-events/${DUMMY_HOSTED[0].eventId}`;
-        
-        navigate(path);
-    };
-
-    return (
-        <div onClick={redirectToEventHandler}>
-            <h1>{DUMMY_HOSTED[0].name}</h1>
-            <h3>{DUMMY_HOSTED[0].price}</h3>
-            <h3>{DUMMY_HOSTED[0].numJoined}/{DUMMY_HOSTED[0].capacity} people joined</h3>
-            <h3>When: {DUMMY_HOSTED[0].date} at {DUMMY_HOSTED[0].time}</h3>
-        </div>
-    )
+  return (
+    <div className="grid grid-cols-3">
+      {DUMMY_HOSTED.map((event) => (
+        <EventCard key={event.id} name={event.name} price={event.price} capacity = {event.capacity} 
+        numJoined = {event.numJoined} date = {event.date} time = {event.time}/>
+      ))}
+    </div>
+  );
 };
 
 export default HostedEvents;
