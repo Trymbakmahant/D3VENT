@@ -28,7 +28,7 @@ const Host = () => {
                 <option>PM</option>
                 </select>
                 <Input type = "text" label = "Thumbnail" placeholder = "A link to the thumbnail of event" />
-                <Button classes = "btn-primary btn-wide">Submit Event</Button>
+                <Button classes='btn-primary'>Submit Event</Button>
             </form>
         </div>
     )
