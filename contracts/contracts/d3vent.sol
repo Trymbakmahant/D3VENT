@@ -25,7 +25,7 @@ contract d3vent {
     /// @dev The World ID group ID (always 1)
     uint256 internal immutable groupId = 1;
 
-    address private worldcoin;  //note: this is immutable in Worlcoin's example contract
+    address public worldcoin;  //note: this is immutable in Worlcoin's example contract and private
     
     /// @dev Whether a nullifier hash has been used already. Used to guarantee an action is only performed once by a single person
     mapping(uint256 => bool) internal nullifierHashes;
