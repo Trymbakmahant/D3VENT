@@ -1,10 +1,11 @@
+import WORLDIDwidget from "../Home/WorldIDwidget";
 const Home = () => {
-    
-    return (
-        <div>
-            <h1>This is home</h1>
-        </div>
-    )
+  return (
+    <div>
+      <WORLDIDwidget />
+      <h1>thisss is home</h1>
+    </div>
+  );
 };
 
 export default Home;
