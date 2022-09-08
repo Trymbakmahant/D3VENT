@@ -11,7 +11,6 @@ const NETWORKS_LOOKUP = new Map([
 ]);
 
 const TARGET_NETWORK = "80001"; // Mumbai
-
 const MUMBAI_SCAN_STUB = "https://mumbai.polygonscan.com/address/"
 const POLYGON_SCAN_STUB = "https://polyscan.com/"
 

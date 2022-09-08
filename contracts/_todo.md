@@ -4,7 +4,6 @@ info
         "test event name","https://livepeer.org/123",1662994265,1000,1000000,false
 
 
-
 todos and questions of what to do
 
      should we allow multiple organisers?
@@ -38,7 +37,6 @@ todos and questions of what to do
      create event organiser always msg.sender? setOrgnaiser function to change?
      should event have a closed/finished dateTime?
      should joiner address always be msg.sender or allow to join another address?
-    
+
      don't think there's any need to zero out joiner balances after organiser withdrawal, but could add a flag for added safety
      would be too gassy iterating through a large number of joiners
-     
