@@ -4,7 +4,6 @@ info
         "test event name","https://livepeer.org/123",1662994265,1000,1000000,false
 
 
-
 todos and questions of what to do
 
      should we allow multiple organisers?
