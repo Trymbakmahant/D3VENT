@@ -1,3 +1,6 @@
+## DO NOT DELETE THIS FILE!!!
+## SERIOUSLY, DON'T DELETE IT
+
 .env
 node_modules
 coverage
@@ -18,6 +21,9 @@ package.json
 package-lock.json
 run.js
 tempCodeRunnerFile.js
+tempCodeRunnerFile.mjs
+temptest.js
+temptest.mjs
 HH-README.md
 Lock.js
 
