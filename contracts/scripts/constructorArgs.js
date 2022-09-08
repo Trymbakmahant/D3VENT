@@ -4,7 +4,6 @@
 require("dotenv").config();
 
 const worldcoin_addr = process.env.WORLDID_ADDR
-console.log("worldcoin addr" + worldcoin_addr)
 
 const days = 60 * 60 * 24 * 1000
 const withdrawBuffer = 3 * days
