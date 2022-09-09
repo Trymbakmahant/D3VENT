@@ -14,12 +14,12 @@ artifacts
 
 #misc
 _info.md
-deploy.js
+## deploy.js
 deployAddressesLog.txt
 ## hardhat.config.js
 package.json
 package-lock.json
-run.js
+## run.js
 tempCodeRunnerFile.js
 tempCodeRunnerFile.mjs
 temptest.js
