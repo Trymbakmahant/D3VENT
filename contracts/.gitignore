@@ -16,7 +16,7 @@ artifacts
 _info.md
 deploy.js
 deployAddressesLog.txt
-hardhat.config.js
+## hardhat.config.js
 package.json
 package-lock.json
 run.js
