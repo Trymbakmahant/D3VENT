@@ -32,7 +32,7 @@ const main = async () => {
     // log the deployment addresses to quick reference file
     await writeFileDeployAddr(d3ventContract.address)
     // create an export file for contract address. pipeline: imported by the frontend
-    await writeExportContractAddr("../client/contract/contractAddress.js", d3ventContract.address)
+    await writeExportContractAddr("../client/src/constants/contractAddress.js", d3ventContract.address)
     // create and abi file. pipeline: imported by the frontend
     await writeABI()
 
@@ -90,9 +90,9 @@ async function writeExportContractAddr(filepath, contractAddress) {
 // an abi.json file and create an abi file for the front end to import
 async function writeABI () {
   const fs = require('fs');
-  const contractArtifacts = fs.readFileSync('./artifacts/contracts/d3vent.sol/d3vent.json', 'utf8');
+  const contractArtifacts = fs.readFileSync('./artifacts/src/constants/d3vent.sol/d3vent.json', 'utf8');
   const abi = JSON.parse(contractArtifacts).abi;
-  fs.writeFileSync('../client/contract/abi.json', JSON.stringify(abi, null, 2), err => {
+  fs.writeFileSync('../client/src/constants/abi.json', JSON.stringify(abi, null, 2), err => {
     if (err) {
       console.error(err)
     }
