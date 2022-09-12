@@ -53,10 +53,11 @@ contract d3vent {
 
     mapping(address => bool) public isVerified; // user address => bool
     mapping(uint => mapping(address => bool)) public isJoined;    // eventId => user address => isJoined
+    mapping(address => uint[]) public userEventIds; //user address => event ids
     mapping(uint => mapping(address => uint)) public joinerBalances;   // eventId => user address => balance
+    mapping(address => uint[]) public organiserEventIds; // organiser address => event ids
     mapping(uint => uint) public eventBalances;    // eventId => event balance
     mapping(address => bool) public isAdmin;   // admin address to bool
-    
 
     constructor (uint _withdrawalBuffer, IWorldID _worldId) {
         isAdmin[msg.sender] = true;
@@ -157,7 +158,9 @@ contract d3vent {
         newEvent.price = _price;
         newEvent.capacity = _capacity;
         newEvent.isJoinable = _isJoinable;
-    
+
+        organiserEventIds[msg.sender].push(newEvent.id);
+
         events.push(newEvent);
         emit CreatedEvent(newEvent.id, newEvent.dateTime, newEvent.name);
     }
@@ -186,6 +189,7 @@ contract d3vent {
 
         ++events[_id].numJoined;
         isJoined[_id][msg.sender] = true;
+        userEventIds[msg.sender].push(_id);
         eventBalances[_id] = msg.value;
     }
     
@@ -194,6 +198,18 @@ contract d3vent {
     function getEvent(uint _id) external view returns (event_ memory) {
         require(_id <= eventIds, "invalid event id");
         return events[_id];
+    }
+
+
+    // @dev returns array of created event ids for organiser address
+    function getOrganiserEventIds(address _organiser) external view returns(uint[] memory) {
+        return organiserEventIds[_organiser];
+    }
+
+
+    // @dev returns array of joined event ids for user address
+    function getUserEventIds(address _user) external view returns(uint[] memory) {
+        return userEventIds[_user];
     }
 
     
