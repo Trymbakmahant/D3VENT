@@ -4,7 +4,13 @@ const { NETWORKS_LOOKUP, POLYGON_SCAN_STUB } = require("./constants.js")
 
 const constructorArgs = require('./constructorArgs');
 const adminAccounts = require('./adminTestAccounts');
-let networkName, networkId, contractAbi
+const { SignerWithAddress } = require("@nomiclabs/hardhat-ethers/signers.js");
+const { Signer } = require("ethers");
+let networkName, networkId, srs
+
+assignSigners = async () => srs = await hre.ethers.getSigners()
+  assignSigners()
+
 
 const main = async () => {
   
@@ -23,6 +29,35 @@ const main = async () => {
   const contractNetwork = await d3ventContract.provider.getNetwork()
   networkId = contractNetwork.chainId.toString()
   
+  try {
+    // event name, event uri, dateTime, capacity, price, isJoinable
+    await d3ventContract.createEvent("inaugural event","https://livepeer.org/123",1662994265000,1000,1000000,true)
+    await d3ventContract.createEvent("second event ","https://livepeer.org/456",1673994265000,2000,2000000,true)
+    await d3ventContract.createEvent("thrid event ","https://livepeer.org/789",1683994265000,3000,3000000,true)
+    await d3ventContract.createEvent("fourth event ","https://livepeer.org/101112",1686994265000,4000,4000000,true)
+    await d3ventContract.createEvent("fifth event ","https://livepeer.org/131415",1685994265000,5000,5000000,false)
+  } catch (error) {
+    console.log("createEvent: ", error)
+  }
+  try {
+    await d3ventContract.joinEvent(0, {value: ethers.utils.parseUnits("1000", 'wei').toHexString()})
+    await d3ventContract.joinEvent(1, {value: ethers.utils.parseUnits("2000", 'wei').toHexString()})
+    await d3ventContract.joinEvent(2, {value: ethers.utils.parseUnits("3000", 'wei').toHexString()})
+  } catch (error) {
+    console.log("joinEvent: ", error)
+  }
+
+  try {
+
+    if(true) {
+      console.log(await d3ventContract.getEvent(0))
+      console.log(await d3ventContract.getOrganiserEventIds(srs[0].address))
+      console.log(await d3ventContract.getUserEventIds(srs[0].address))
+    }
+  } catch (error) {
+    console.log("get events and ids: ", error)
+  }
+
   // if not Hardhat i.e. local do some pipeline actions
   if(networkId != "31337") {
     networkName = NETWORKS_LOOKUP.get(networkId)
@@ -34,7 +69,7 @@ const main = async () => {
     // create an export file for contract address. pipeline: imported by the frontend
     await writeExportContractAddr("../client/src/constants/contractAddress.js", d3ventContract.address)
     // create and abi file. pipeline: imported by the frontend
-    await writeABI()
+    await writeABI('../client/src/constants/abi.json')
 
     // setup teammate test accounts as contract admins
     for(const account of adminAccounts) {
@@ -74,12 +109,12 @@ async function writeFileDeployAddr(contractAddress) {
   })
 }
 
-async function writeExportContractAddr(filepath, contractAddress) {
+async function writeExportContractAddr(outFilepath, contractAddress) {
   const fs = require('fs');
   const content = "module.exports = [\n    " + contractAddress +"\n]"
-  console.log(filepath)
+  console.log(outFilepath)
   console.log(content)
-  fs.writeFileSync(filepath, content, err => {
+  fs.writeFileSync(outFilepath, content, err => {
     if (err) {
       console.error(err)
     }
@@ -88,11 +123,13 @@ async function writeExportContractAddr(filepath, contractAddress) {
 
 // pipeline: take the abi out of the contract artifacts file and create
 // an abi.json file and create an abi file for the front end to import
-async function writeABI () {
+async function writeABI (outFilepath) {
+  const inFilePath = './artifacts/contracts/d3vent.sol/d3vent.json'
+
   const fs = require('fs');
-  const contractArtifacts = fs.readFileSync('./artifacts/src/constants/d3vent.sol/d3vent.json', 'utf8');
+  const contractArtifacts = fs.readFileSync(inFilePath, 'utf8');
   const abi = JSON.parse(contractArtifacts).abi;
-  fs.writeFileSync('../client/src/constants/abi.json', JSON.stringify(abi, null, 2), err => {
+  fs.writeFileSync(outFilepath, JSON.stringify(abi, null, 2), err => {
     if (err) {
       console.error(err)
     }

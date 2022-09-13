@@ -41,12 +41,16 @@ const AppWrapper = (props) =>{
     }
     /**setAdress() ends here */
 
-
-    /**This function provides worldcoin address to contract in order to verify them onchain */
-    const provideWorldCoinAddress = async (worldCoinAddress) => {
-
-    }  
-    /**provideWorldCoinAddress ends here */
+  /**This function provides worldcoin address to contract in order to verify them onchain */
+  const provideWorldCoinAddress = async (
+    signal,
+    root,
+    nullifierHash,
+    proof
+  ) => {
+    await account.contract.verifyAndExecute(signal, root, nullifierHash, proof);
+  };
+  /**provideWorldCoinAddress ends here */
 
 
     /**ADDS a new admin on smart contract */
