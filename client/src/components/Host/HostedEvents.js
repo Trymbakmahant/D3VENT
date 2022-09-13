@@ -54,7 +54,7 @@ const HostedEvents = () => {
   return (
     <div className="grid grid-cols-3">
       {DUMMY_HOSTED.map((event) => (
-        <EventCard key={event.id} name={event.name} price={event.price} capacity = {event.capacity} 
+        <EventCard key={event.eventId} id = {event.eventId} name={event.name} price={event.price} capacity = {event.capacity} 
         numJoined = {event.numJoined} date = {event.date} time = {event.time}/>
       ))}
     </div>

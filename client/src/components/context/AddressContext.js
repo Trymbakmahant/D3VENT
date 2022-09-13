@@ -7,6 +7,12 @@ export const AppContext = createContext();
 
 const AppWrapper = (props) =>{
     const [accountAddress, setAccountAddress] = useState('');
+    const [showStreamKey, setShowStreamKey] = useState(false);
+    const [streamKey, setStreamKey] = useState({
+        currentKey: '',
+        ingestUrl: '',
+        playbackId: ''
+    });
     const [account, setAccount] = useState({
         signer: null,
         contract: null
@@ -89,11 +95,24 @@ const AppWrapper = (props) =>{
     /** getSingleEvent() ends here */
 
 
+    const canGoLive = (streamKey, playbackId) => {
+        setStreamKey((prevState) => {
+            return {
+                currentKey: streamKey,
+                ingestUrl: `srt://rtmp.livepeer.com:2935?${streamKey}`,
+                playbackId: playbackId
+            }
+        })
+        setShowStreamKey(true);
+    }
     /**This state is shared accross all the components => add any function or variable to use it in other component */
     const sharedState = {
         setAddress,
         createNewEvent,
-        provideWorldCoinAddress
+        provideWorldCoinAddress,
+        showStreamKey,
+        streamKey,
+        canGoLive
     };
 
     return (

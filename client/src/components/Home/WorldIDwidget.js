@@ -1,7 +1,7 @@
 import { WorldIDWidget } from "@worldcoin/id";
 const WroldCoinUse = () => {
   return (
-    <div>
+    <div style = {{margin: "2%"}}>
       {" "}
       <WorldIDWidget
         actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org

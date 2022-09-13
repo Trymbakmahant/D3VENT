@@ -1,9 +1,10 @@
 import WORLDIDwidget from "../Home/WorldIDwidget";
+import Slick from './Slick';
 const Home = () => {
   return (
     <div>
       <WORLDIDwidget />
-      <h1>thisss is home</h1>
+      <Slick />
     </div>
   );
 };
