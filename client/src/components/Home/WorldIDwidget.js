@@ -4,18 +4,18 @@ import { useContext } from "react";
 const WroldCoinUse = () => {
   const ctx = useContext(AppContext);
   return (
-    <div style = {{margin: "2%"}}>
+    <div style={{ margin: "2%" }}>
       {" "}
       <WorldIDWidget
         actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org
         signal={ctx.sharedState.accountAddress}
         enableTelemetry
         onSuccess={(obj) => {
-          const { root, nullifierHash, proof } = obj;
+          const { merkle_root, nullifier_hash, proof } = obj;
           ctx.sharedState.provideWorldCoinAddress(
             ctx.sharedState.accountAddress,
-            root,
-            nullifierHash,
+            merkle_root,
+            nullifier_hash,
             proof
           );
           console.log(obj);
