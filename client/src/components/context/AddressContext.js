@@ -116,7 +116,8 @@ const AppWrapper = (props) =>{
         provideWorldCoinAddress,
         showStreamKey,
         streamKey,
-        canGoLive
+        canGoLive,
+        accountAddress
     };
 
     return (

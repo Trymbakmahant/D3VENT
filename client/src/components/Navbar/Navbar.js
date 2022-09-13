@@ -4,11 +4,13 @@ import {NavLink} from "react-router-dom";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from '@wagmi/core';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { AppContext } from '../context/AddressContext';
 
 const Navbar = () => {
+    const [isAddress, setIsAddress] = useState(false);
+
     const {address} = useAccount();
     const ctx = useContext(AppContext);
 
@@ -16,9 +18,16 @@ const Navbar = () => {
         connector: new InjectedConnector(),
     });
 
-    if(address){
-        ctx.sharedState.setAddress(address);
+    const connectHandler = () => {
+        setIsAddress(true);
     }
+            if(address && isAddress)
+            {   
+                setIsAddress(false);
+                ctx.sharedState.setAddress(address);
+            }
+        
+    
 
     const activeStyle = {
         borderBottom: "2px solid white",
@@ -42,7 +51,7 @@ const Navbar = () => {
                     <h3>Host</h3>
                 </NavLink>
             </div>
-            <div>
+            <div onClick = {connectHandler}>
                 <ConnectButton showBalance = {false} chainStatus = "icon"/>
             </div>
         </div>
