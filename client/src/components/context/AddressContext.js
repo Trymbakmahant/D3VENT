@@ -120,11 +120,12 @@ const AppWrapper = (props) =>{
 
 
     /**Adds a new Event in the events array */
-    const createNewEvent = async (eventData) => {
+    const createNewEvent = async (name, uri, date, price, capacity) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        // await account.contract.createEvent(); //This function is not complete yet do not use it
+        const newEvent = await account.contract.createEvent(name, uri, date, price, capacity, true); //This function is not complete yet do not use it
 
+        await newEvent.wait();
     }
     /**createNewEvent ends here */
 
@@ -144,6 +145,10 @@ const AppWrapper = (props) =>{
     const getOrganisedEvents = async () => {
 
         const organisedEvents = await account.contract.getOrganiserEventIds(accountAddress);
+
+        console.log(organisedEvents);
+        const num = Number(organisedEvents[0]._hex)
+        console.log(num);
     }
 
 

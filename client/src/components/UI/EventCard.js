@@ -18,10 +18,11 @@ const EventCard = (props) => {
             navigate(`/participated-events/${props.id}`);
         }
     };
-
+    
+    // 12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq
     return <div className= {classes.card}>
         <h1>{props.name}</h1>
-        <img src = '/sample.png' />
+        <img src = 'https://drive.google.com/uc?export=view&id=12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq'/>
         <h2>{props.numJoined}/{props.capacity} People Joined</h2>
         <Button classes = {`${classes.btn}`} onClick = {singleEventHandler}>Know More</Button>
     </div>

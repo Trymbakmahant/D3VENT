@@ -160,25 +160,6 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "changedBy",
-        "type": "address"
-      }
-    ],
-    "name": "WorldcoinAddressChanged",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -189,6 +170,19 @@
     "name": "addAdmin",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "adminsCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -206,6 +200,11 @@
       {
         "internalType": "uint256",
         "name": "_dateTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_duration",
         "type": "uint256"
       },
       {
@@ -262,6 +261,89 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "eventIds",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllEvents",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "organiser",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "dateTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "duration",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "capacity",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "numJoined",
+            "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isJoinable",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawalDate",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct d3vent.event_[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -296,6 +378,11 @@
           {
             "internalType": "uint256",
             "name": "dateTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "duration",
             "type": "uint256"
           },
           {
@@ -553,19 +640,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_addr",
-        "type": "address"
-      }
-    ],
-    "name": "setWorldcoinAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "",
         "type": "address"
       },
@@ -616,12 +690,12 @@
   },
   {
     "inputs": [],
-    "name": "worldcoin",
+    "name": "withdrawalBuffer",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
