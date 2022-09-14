@@ -73,23 +73,36 @@ const AppWrapper = (props) =>{
     nullifierHash,
     proof
   ) => {
-    await account.contract.verifyAndExecute(signal, root, nullifierHash, proof);
+    const unpackedProof = ethers.utils.defaultAbiCoder.decode(
+      ["uint256[8]"],
+      proof
+    )[0];
+    console.log("hello world coin");
+    const root1 = ethers.BigNumber.from(root);
+    const nullifier = ethers.BigNumber.from(nullifierHash);
+    console.log(root1);
+    try {
+      await account.contract.verifyAndExecute(
+        signal,
+        root1,
+        nullifier,
+        unpackedProof
+      );
+      console.log("success");
+    } catch (err) {
+      console.log(err);
+    }
   };
   /**provideWorldCoinAddress ends here */
 
+  /**ADDS a new admin on smart contract */
+  const addAdmin = async (newAdminAddress) => {};
+  /**addAdmin ends here */
 
-    /**ADDS a new admin on smart contract */
-    const addAdmin = async (newAdminAddress) =>{
+  /**Deletes an existing admin */
+  const deleteAdmin = async (adminAddress) => {};
+  /**deleteAdmin() ends here */
 
-    }
-    /**addAdmin ends here */
-
-
-    /**Deletes an existing admin */
-    const deleteAdmin = async (adminAddress) =>{
-
-    }
-    /**deleteAdmin() ends here */
 
 
     /**Adds a new organiser of the existing event based on eventId */
