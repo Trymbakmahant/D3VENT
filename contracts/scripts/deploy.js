@@ -116,7 +116,8 @@ async function writeFileDeployAddr(contractAddress) {
 
 async function writeExportContractAddr(outFilepath, contractAddress) {
   const fs = require('fs');
-  const content = "module.exports = [\n    " + contractAddress +"\n]"
+  const content = "const addressofContract = '" + contractAddress +"'\nexport default addressofContract;"
+
   console.log(outFilepath)
   console.log(content)
   fs.writeFileSync(outFilepath, content, err => {
