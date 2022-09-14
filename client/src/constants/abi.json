@@ -649,19 +649,6 @@
       },
       {
         "internalType": "address",
-        "name": "_newOrganiser",
-        "type": "address"
-      }
-    ],
-    "name": "setOrganiser",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "",
         "type": "address"
       },

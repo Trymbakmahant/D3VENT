@@ -11,6 +11,7 @@ contract d3vent {
     event NewOrganiser(uint indexed eventId, address newOrganiser);
     event AdminAdded(address indexed newAdmin, address indexed addedBy);
     event AdminDeleted(address indexed deletedAdmin, address indexed deletedBy);
+
     event UserVerified(address indexed user);
     event EventPlaybackUriUpdated(uint indexed eventId, string playbackUri);
 

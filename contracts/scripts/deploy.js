@@ -31,12 +31,14 @@ const main = async () => {
   //create events
   try {
     console.log("create events")
+
     // event name, event uri, playbackUri, dateTime, duration, isJoinable
     await d3ventContract.createEvent("inaugural event", "www.myevents.com", "https://livepeer.org/123", 1662994265000, 1800000, true)
     await d3ventContract.createEvent("second event", "www.expo.com", "https://livepeer.org/456",    1673994265000, 3600000, true)
     await d3ventContract.createEvent("thrid event", "www.watchit.org", "https://livepeer.org/789",     1683994265000, 5400000, true)
     await d3ventContract.createEvent("fourth event", "www.streamers.com", "https://livepeer.org/101112", 1686994265000, 7200000, true)
     await d3ventContract.createEvent("fifth event", "www.event.com", "https://livepeer.org/131415",  1685994265000, 9000000, false)
+
   } catch (error) {
     console.log("createEvent: ", error)
   }
