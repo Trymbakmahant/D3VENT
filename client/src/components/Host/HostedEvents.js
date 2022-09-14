@@ -1,5 +1,8 @@
 import EventCard from "../UI/EventCard";
 
+import { useContext } from "react";
+import { AppContext } from "../context/AddressContext";
+
 const DUMMY_HOSTED = [
   {
     name: "Dummy event",
@@ -49,13 +52,15 @@ const DUMMY_HOSTED = [
 ];
 
 const HostedEvents = () => {
+  const ctx = useContext(AppContext);
 
+  ctx.sharedState.getOrganisedEvents();
 
   return (
     <div className="grid grid-cols-3">
       {DUMMY_HOSTED.map((event) => (
-        <EventCard key={event.id} name={event.name} price={event.price} capacity = {event.capacity} 
-        numJoined = {event.numJoined} date = {event.date} time = {event.time}/>
+        <EventCard key={event.eventId} id = {event.eventId} name={event.name} price={event.price} capacity = {event.capacity} 
+        numJoined = {event.numJoined} date = {event.date} time = {event.time} type = "organiser"/>
       ))}
     </div>
   );

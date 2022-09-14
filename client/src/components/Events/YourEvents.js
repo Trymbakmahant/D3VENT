@@ -7,7 +7,9 @@ import classes from "./YourEvents.module.css";
 const YourEvents = () => {
     const navigate = useNavigate();
 
-  const redirectToParticipatedEvents = () => {};
+  const redirectToParticipatedEvents = () => {
+    navigate('/participated-events');
+  };
 
   const redirectToHostedEvents = () => {
     navigate('/hosted-events');
