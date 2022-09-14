@@ -2,6 +2,8 @@ const hre = require("hardhat");
 require("dotenv").config();
 const { NETWORKS_LOOKUP, POLYGON_SCAN_STUB } = require("./constants.js")
 
+const debug = false // extra console loggin
+
 const constructorArgs = require('./constructorArgs');
 const adminAccounts = require('./adminTestAccounts');
 const { SignerWithAddress } = require("@nomiclabs/hardhat-ethers/signers.js");
@@ -13,12 +15,7 @@ assignSigners = async () => srs = await hre.ethers.getSigners()
 
 
 const main = async () => {
-  
-  const worldcoin_addr = process.env.WORLDID_ADDR
-  console.log("worldcoin addr: " + worldcoin_addr)
-  
-  const days = 60 * 60 * 24 * 1000
-  const withdrawBuffer = 3 * days
+  console.log("contructor args:", constructorArgs)
 
   const d3ventContractFactory = await hre.ethers.getContractFactory('d3vent');
   const d3ventContract = await d3ventContractFactory.deploy(...constructorArgs);
@@ -28,18 +25,25 @@ const main = async () => {
 
   const contractNetwork = await d3ventContract.provider.getNetwork()
   networkId = contractNetwork.chainId.toString()
+  networkName = NETWORKS_LOOKUP.get(networkId)
+  console.log("Network: %s %s", networkId, networkName )
   
+  //create events
   try {
-    // event name, event uri, dateTime, capacity, price, isJoinable
-    await d3ventContract.createEvent("inaugural event","https://livepeer.org/123",1662994265000,1000,1000000,true)
-    await d3ventContract.createEvent("second event ","https://livepeer.org/456",1673994265000,2000,2000000,true)
-    await d3ventContract.createEvent("thrid event ","https://livepeer.org/789",1683994265000,3000,3000000,true)
-    await d3ventContract.createEvent("fourth event ","https://livepeer.org/101112",1686994265000,4000,4000000,true)
-    await d3ventContract.createEvent("fifth event ","https://livepeer.org/131415",1685994265000,5000,5000000,false)
+    console.log("create events")
+    // event name, event uri, dateTime, duration, price, capacity, isJoinable
+    await d3ventContract.createEvent("inaugural event", "https://livepeer.org/123", 1662994265000, 1800000, 1000, 100 ,true)
+    await d3ventContract.createEvent("second event", "https://livepeer.org/456",    1673994265000, 3600000, 2000, 2000, true)
+    await d3ventContract.createEvent("thrid event", "https://livepeer.org/789",     1683994265000, 5400000, 3000, 3000, true)
+    await d3ventContract.createEvent("fourth event", "https://livepeer.org/101112", 1686994265000, 7200000, 4000, 40000, true)
+    await d3ventContract.createEvent("fifth event", "https://livepeer.org/131415",  1685994265000, 9000000, 5000, 50000, false)
   } catch (error) {
     console.log("createEvent: ", error)
   }
+
+  // join events
   try {
+    console.log("join events")
     await d3ventContract.joinEvent(0, {value: ethers.utils.parseUnits("1000", 'wei').toHexString()})
     await d3ventContract.joinEvent(1, {value: ethers.utils.parseUnits("2000", 'wei').toHexString()})
     await d3ventContract.joinEvent(2, {value: ethers.utils.parseUnits("3000", 'wei').toHexString()})
@@ -47,12 +51,14 @@ const main = async () => {
     console.log("joinEvent: ", error)
   }
 
+  // can log data to console for debugging
   try {
 
-    if(true) {
+    if(false) {
       console.log(await d3ventContract.getEvent(0))
       console.log(await d3ventContract.getOrganiserEventIds(srs[0].address))
       console.log(await d3ventContract.getUserEventIds(srs[0].address))
+      console.log(await d3ventContract.getAllEvents())
     }
   } catch (error) {
     console.log("get events and ids: ", error)
@@ -60,7 +66,6 @@ const main = async () => {
 
   // if not Hardhat i.e. local do some pipeline actions
   if(networkId != "31337") {
-    networkName = NETWORKS_LOOKUP.get(networkId)
 
     // output contract address to current address quick reference file and log file
     console.log("writing contract address reference files")
@@ -134,5 +139,5 @@ async function writeABI (outFilepath) {
       console.error(err)
     }
   })
-  console.log(abi)
+  if(debug){console.log(abi)}
 }
