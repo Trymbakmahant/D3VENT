@@ -66,16 +66,33 @@ const Host = () => {
 
     const formSubmitHandler = (event) =>{
         event.preventDefault();
-        console.log(formInput);
-        ctx.sharedState.createNewEvent(formInput);
+        // console.log(formInput);  
+
+        let time = formInput.time;
+
+        if(formInput.timeFormat === "PM"){
+            time = +formInput.time + 12;    
+        }
+
+        time = time.toString() + ':00';
+    
+        const nonFormatDate = formInput.date + ' ' +time;
+        let someDate = Number(new Date(nonFormatDate));
+
+        let imageId = formInput.thumbnail.split('/')[5];
+        let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`;
+
+    
+        
+        ctx.sharedState.createNewEvent(formInput.name, imageUrl, someDate, +formInput.price, +formInput.capacity);
     };
 
     return (
         <div>
             <form className = 'Form1' onSubmit={formSubmitHandler}>
                 <Input type = "text" label = "Event Name" placeholder = "Enter your event name" inputChange = {inputHandler}/>
-                <Input type = "text" label = "Ticket price" placeholder = "Enter ticket price(in wei)" inputChange = {inputHandler}/>
-                <Input type = "text" label = "Capacity" placeholder = "How many people can join" inputChange = {inputHandler}/>
+                <Input type = "number" label = "Ticket price" placeholder = "Enter ticket price(in wei)" inputChange = {inputHandler}/>
+                <Input type = "number" label = "Capacity" placeholder = "How many people can join" inputChange = {inputHandler}/>
                 <Input type = "date" label = "Date" placeholder = "Enter event date" min = {currentDate} inputChange = {inputHandler}/>
                 <Input type = "number" label = "Time" placeholder = "What's the timing of event" min = "1" max = "12" inputChange = {inputHandler}/>
                 <select class="select select-info w-full max-w-xs" onChange = {timeFormatHandler}>

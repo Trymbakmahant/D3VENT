@@ -16,7 +16,7 @@ const Navbar = () => {
     const isConnected = ctx.sharedState.isConnected;
 
     const connectHandler = () => { 
-        ctx.sharedState.connectWalletHandler()
+        ctx.sharedState.connectWalletHandler();
     };
 
   const activeStyle = {
@@ -50,7 +50,7 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div>
-        <Button classes = {`btn-secondary ${classes.connectBtn}`} onClick = {isConnected ? '' :{connectHandler}}>{isConnected ? `${accountAddress.substring(0,4)}...${accountAddress.substring(38,42)}` : 'Connect Wallet'}</Button>
+        <Button classes = {`btn-secondary ${classes.connectBtn}`} onClick = {!isConnected && connectHandler}>{isConnected ? `${accountAddress.substring(0,4)}...${accountAddress.substring(38,42)}` : 'Connect Wallet'}</Button>
       </div>
     </div>
   );
