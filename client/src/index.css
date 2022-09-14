@@ -18,6 +18,33 @@ code {
   margin-left: 40%;
 }
 .btn{
+  margin-left: 75px;
   margin-left: 30px;
   margin-top:25px;
+}
+.logo{
+  width: 60px;
+  height: auto;
+        
+  margin-right: 10px;
+}
+.knowmore{
+  margin-left: 100px;
+  margin-top: 50px;
+}
+.btn-error{
+  margin-left: 100px;
+}
+.dvideo{
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: large;
+        
+}
+.ddvideo{
+  justify-content: center;
+    align-items: center;
+      margin-left: 30%;
+      margin-top: 20px;
 }
