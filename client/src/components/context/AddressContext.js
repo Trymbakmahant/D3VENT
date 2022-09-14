@@ -1,11 +1,30 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-import { contractABI, addressOfContract } from "../../constants";
+import contractABI from "../../constants/abi.json";
+import addressOfContract from "../../constants/contractAddress";
+
+import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
+
+import web3Modal from "web3modal";
+
 
 export const AppContext = createContext();
 
+const web3modal = new web3Modal({
+    providerOptions: {
+        walletlink: {
+            package: CoinbaseWalletSDK, // Required
+            options: {
+              appName: "Web 3 Modal Demo", // Required
+              infuraId: process.env.INFURA_KEY // Required unless you provide a JSON RPC url; see `rpc` below
+            }
+        }
+    }
+});
+
 const AppWrapper = (props) =>{
+    const [isConnected, setIsConnected] = useState(false);
     const [accountAddress, setAccountAddress] = useState('');
     const [showStreamKey, setShowStreamKey] = useState(false);
     const [streamKey, setStreamKey] = useState({
@@ -22,13 +41,20 @@ const AppWrapper = (props) =>{
         const contractAddress = addressOfContract;
         const ABI = contractABI;
 
-    /** Function setAddress() sets the account Address */
-    const setAddress = (address) => {
-        setAccountAddress(address);
+    useEffect(() => {
+        connectWalletHandler();
+    }, [])
 
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const getSigner = provider.getSigner();
+    /** Function connectWalletHandler() sets the account Address */
+    const connectWalletHandler = async () => {
+        const provider = await web3modal.connect();
+        const library = new ethers.providers.Web3Provider(provider);
+        const getSigner = library.getSigner();
         const contract = new ethers.Contract(contractAddress, ABI, getSigner);
+        const accounts = await library.listAccounts();
+        setIsConnected(true);
+
+        setAccountAddress(accounts[0]);
 
         setAccount((prevState) => {
             return {
@@ -37,9 +63,8 @@ const AppWrapper = (props) =>{
                 contract: contract
             }
         });
-
     }
-    /**setAdress() ends here */
+    /**connectWalletHandler() ends here */
 
   /**This function provides worldcoin address to contract in order to verify them onchain */
   const provideWorldCoinAddress = async (
@@ -85,7 +110,7 @@ const AppWrapper = (props) =>{
     const createNewEvent = async (eventData) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        await account.contract.createEvent(); //This function is not complete yet do not use it
+        // await account.contract.createEvent(); //This function is not complete yet do not use it
 
     }
     /**createNewEvent ends here */
@@ -95,9 +120,25 @@ const AppWrapper = (props) =>{
     /** Function to get a single event based on eventId */
     const getSingleEvent = async (eventId) =>{
 
+        const tx = await account.contract.getEvent(eventId);
+
+        console.log('Single event is ', tx);
+
     };
     /** getSingleEvent() ends here */
 
+
+    const getOrganisedEvents = async () => {
+
+        const organisedEvents = await account.contract.getOrganiserEventIds(accountAddress);
+    }
+
+
+    const getUserEvents = async () => {
+        const userEvents = await account.contract.getUserEventIds(accountAddress);
+
+        console.log(userEvents);
+    }
 
     const canGoLive = (streamKey, playbackId) => {
         setStreamKey((prevState) => {
@@ -111,13 +152,17 @@ const AppWrapper = (props) =>{
     }
     /**This state is shared accross all the components => add any function or variable to use it in other component */
     const sharedState = {
-        setAddress,
         createNewEvent,
         provideWorldCoinAddress,
         showStreamKey,
         streamKey,
         canGoLive,
-        accountAddress
+        accountAddress,
+        getOrganisedEvents,
+        connectWalletHandler,
+        isConnected,
+        getUserEvents,
+        getSingleEvent
     };
 
     return (

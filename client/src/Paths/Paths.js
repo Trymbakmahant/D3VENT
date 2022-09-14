@@ -7,6 +7,8 @@ import Live from "../components/Live/Live";
 import HostedEvents from "../components/Host/HostedEvents";
 import HostedEvent from "../components/Host/HostedEvent";
 import Playback from "../components/Live/Playback";
+import ParticipatedEvents from "../components/Events/ParticipatedEvents";
+import ParticipatedEvent from "../components/Events/ParticipatedEvent";
 
 const Paths = () => {
     return (
@@ -18,6 +20,8 @@ const Paths = () => {
             <Route path = "/hosted-events" element = {<HostedEvents />} />
             <Route path = "/hosted-events/:id" element = {<HostedEvent />} />
             <Route path = "/events/:playbackId" element = {<Playback />} />
+            <Route path = "/participated-events" element = {<ParticipatedEvents />}/>
+            <Route path = "/participated-events/:id" element = {<ParticipatedEvent />} />
         </Routes>
     )
 };
