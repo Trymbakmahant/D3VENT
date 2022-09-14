@@ -71,7 +71,6 @@ const Host = () => {
     }
   }
 
-<<<<<<< HEAD
   const formSubmitHandler = (event) => {
     event.preventDefault()
     console.log(formInput)
@@ -135,49 +134,88 @@ const Host = () => {
     </div>
   )
 }
-=======
-    const formSubmitHandler = (event) =>{
-        event.preventDefault();
-        // console.log(formInput);  
+const formSubmitHandler = (event) => {
+  event.preventDefault()
+  // console.log(formInput);
 
-        let time = formInput.time;
+  let time = formInput.time
 
-        if(formInput.timeFormat === "PM"){
-            time = +formInput.time + 12;    
-        }
+  if (formInput.timeFormat === 'PM') {
+    time = +formInput.time + 12
+  }
 
-        time = time.toString() + ':00';
-    
-        const nonFormatDate = formInput.date + ' ' +time;
-        let someDate = Number(new Date(nonFormatDate));
+  time = time.toString() + ':00'
 
-        let imageId = formInput.thumbnail.split('/')[5];
-        let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`;
+  const nonFormatDate = formInput.date + ' ' + time
+  let someDate = Number(new Date(nonFormatDate))
 
-    
-        
-        ctx.sharedState.createNewEvent(formInput.name, imageUrl, someDate, +formInput.price, +formInput.capacity);
-    };
+  let imageId = formInput.thumbnail.split('/')[5]
+  let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
 
-    return (
-        <div>
-            <form className = 'Form1' onSubmit={formSubmitHandler}>
-                <Input type = "text" label = "Event Name" placeholder = "Enter your event name" inputChange = {inputHandler}/>
-                <Input type = "number" label = "Ticket price" placeholder = "Enter ticket price(in wei)" inputChange = {inputHandler}/>
-                <Input type = "number" label = "Capacity" placeholder = "How many people can join" inputChange = {inputHandler}/>
-                <Input type = "date" label = "Date" placeholder = "Enter event date" min = {currentDate} inputChange = {inputHandler}/>
-                <Input type = "number" label = "Time" placeholder = "What's the timing of event" min = "1" max = "12" inputChange = {inputHandler}/>
-                <select class="select select-info w-full max-w-xs" onChange = {timeFormatHandler}>
-                <option disabled selected>AM/PM</option>
-                <option>AM</option>
-                <option>PM</option>
-                </select>
-                <Input type = "text" label = "Thumbnail" placeholder = "A link to the thumbnail of event" inputChange = {inputHandler}/>
-                <Button classes = "btn-primary btn-wide">Submit Event</Button>
-            </form>
-        </div>
-    )
-};
->>>>>>> b12bb6d1c7467d12b1c213f06b3464769eaf1160
+  ctx.sharedState.createNewEvent(
+    formInput.name,
+    imageUrl,
+    someDate,
+    +formInput.price,
+    +formInput.capacity
+  )
+}
+
+return (
+  <div>
+    <form className='Form1' onSubmit={formSubmitHandler}>
+      <Input
+        type='text'
+        label='Event Name'
+        placeholder='Enter your event name'
+        inputChange={inputHandler}
+      />
+      <Input
+        type='number'
+        label='Ticket price'
+        placeholder='Enter ticket price(in wei)'
+        inputChange={inputHandler}
+      />
+      <Input
+        type='number'
+        label='Capacity'
+        placeholder='How many people can join'
+        inputChange={inputHandler}
+      />
+      <Input
+        type='date'
+        label='Date'
+        placeholder='Enter event date'
+        min={currentDate}
+        inputChange={inputHandler}
+      />
+      <Input
+        type='number'
+        label='Time'
+        placeholder="What's the timing of event"
+        min='1'
+        max='12'
+        inputChange={inputHandler}
+      />
+      <select
+        class='select select-info w-full max-w-xs'
+        onChange={timeFormatHandler}
+      >
+        <option disabled selected>
+          AM/PM
+        </option>
+        <option>AM</option>
+        <option>PM</option>
+      </select>
+      <Input
+        type='text'
+        label='Thumbnail'
+        placeholder='A link to the thumbnail of event'
+        inputChange={inputHandler}
+      />
+      <Button classes='btn-primary btn-wide'>Submit Event</Button>
+    </form>
+  </div>
+)
 
 export default Host
