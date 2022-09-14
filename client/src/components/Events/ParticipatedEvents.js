@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
+import EventCard from '../UI/EventCard';
 
-import ShowDetails from "./ShowDetails";
-import Live from "../Live/Live";
+import { useContext } from 'react';
+import { AppContext } from '../context/AddressContext';
 
 const DUMMY_HOSTED = [
     {
@@ -15,7 +15,7 @@ const DUMMY_HOSTED = [
     },
     {
       name: "Dummy event2",
-      eventId: 2,
+      eventId: 7,
       price: "1 Ether",
       capacity: 500,
       numJoined: 96,
@@ -24,7 +24,7 @@ const DUMMY_HOSTED = [
     },
     {
       name: "Dummy event3",
-      eventId: 3,
+      eventId: 8,
       price: "1 Ether",
       capacity: 500,
       numJoined: 100,
@@ -33,7 +33,7 @@ const DUMMY_HOSTED = [
     },
     {
       name: "Dummy even4",
-      eventId: 4,
+      eventId: 9,
       price: "1 Ether",
       capacity: 500,
       numJoined: 100,
@@ -42,7 +42,7 @@ const DUMMY_HOSTED = [
     },
     {
       name: "Dummy even5",
-      eventId: 5,
+      eventId: 10,
       price: "1 Ether",
       capacity: 500,
       numJoined: 100,
@@ -51,24 +51,19 @@ const DUMMY_HOSTED = [
     }
   ];
 
-const HostedEvent = () =>{
+const ParticipatedEvents = () => {
+  const ctx = useContext(AppContext);
 
-    let {id} = useParams();
+    ctx.sharedState.getUserEvents();
 
-    let event = DUMMY_HOSTED.filter((singleEvent) => singleEvent.eventId == id);
-
-    event = event[0];
-
-
-    return <div>
-            <h1>{event.name}</h1>
-            <h2>{event.price}</h2>
-            <h2>{event.numJoined}/{event.capacity} people Joined</h2>
-            <h2>Date: {event.date}</h2>
-            <h2>Time: {event.time}</h2>
-            <Live />
-           <ShowDetails />
-    </div>
+    return (
+        <div className="grid grid-cols-3">
+          {DUMMY_HOSTED.map((event) => (
+            <EventCard key={event.eventId} id = {event.eventId} name={event.name} price={event.price} capacity = {event.capacity} 
+            numJoined = {event.numJoined} date = {event.date} time = {event.time} type = "participant"/>
+          ))}
+        </div>
+    )
 };
 
-export default HostedEvent;
+export default ParticipatedEvents;
