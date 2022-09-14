@@ -8,7 +8,15 @@ const EventCard = (props) => {
     const navigate = useNavigate();
 
     const singleEventHandler = () => {
-        navigate(`/hosted-events/${props.id}`);
+        console.log(props.type);
+
+        if(props.type === 'organiser'){
+            navigate(`/hosted-events/${props.id}`);
+            
+        }else if(props.type === 'participant'){
+
+            navigate(`/participated-events/${props.id}`);
+        }
     };
 
     return <div className= {classes.card}>

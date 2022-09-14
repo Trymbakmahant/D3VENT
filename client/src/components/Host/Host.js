@@ -49,15 +49,15 @@ const Host = () => {
                 setFormInput((prevState) => {return {...prevState, capacity: inputValue}});
             break;
             
-            case 'date':
+            case 'Date':
                 setFormInput((prevState) => {return {...prevState, date: inputValue}});
             break;
 
-            case 'time':
+            case 'Time':
                 setFormInput((prevState) => {return {...prevState, time: inputValue}});
             break;
 
-            case 'thumbnail':
+            case 'Thumbnail':
                 setFormInput((prevState) => {return {...prevState, thumbnail: inputValue}});
             break;
 
@@ -66,7 +66,7 @@ const Host = () => {
 
     const formSubmitHandler = (event) =>{
         event.preventDefault();
-        
+        console.log(formInput);
         ctx.sharedState.createNewEvent(formInput);
     };
 
