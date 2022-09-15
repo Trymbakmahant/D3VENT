@@ -38,9 +38,10 @@ contract d3vent {
     
 
     struct event_ {
-        address organiser;
         uint id;
         string name;
+        string description;
+        address organiser;
         string uri;
         string playbackUri;
         uint dateTime;
@@ -50,7 +51,7 @@ contract d3vent {
         uint128 numJoined;      
         bool isJoinable;
         uint withdrawalDate;
-        string description;
+        
     }
 
     event_[] events;
