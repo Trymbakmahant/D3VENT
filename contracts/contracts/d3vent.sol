@@ -140,12 +140,12 @@ contract d3vent {
 
     function createEvent(
         string calldata _name,
+        string calldata _description,
         string calldata _uri,
         string calldata _playbackUri,
         uint _dateTime,
         uint _duration,
-        bool _isJoinable,
-        string calldata _description
+        bool _isJoinable
         ) external {
         require(_dateTime > block.timestamp, "date/time in past");
 

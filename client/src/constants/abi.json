@@ -213,6 +213,11 @@
       },
       {
         "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "_uri",
         "type": "string"
       },
@@ -294,11 +299,6 @@
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "organiser",
-            "type": "address"
-          },
-          {
             "internalType": "uint256",
             "name": "id",
             "type": "uint256"
@@ -307,6 +307,16 @@
             "internalType": "string",
             "name": "name",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "organiser",
+            "type": "address"
           },
           {
             "internalType": "string",
@@ -365,11 +375,6 @@
       {
         "components": [
           {
-            "internalType": "address",
-            "name": "organiser",
-            "type": "address"
-          },
-          {
             "internalType": "uint256",
             "name": "id",
             "type": "uint256"
@@ -378,6 +383,16 @@
             "internalType": "string",
             "name": "name",
             "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "organiser",
+            "type": "address"
           },
           {
             "internalType": "string",
@@ -647,6 +662,19 @@
         "name": "_id",
         "type": "uint256"
       },
+      {
+        "internalType": "address",
+        "name": "_newOrganiser",
+        "type": "address"
+      }
+    ],
+    "name": "setOrganiser",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "address",
         "name": "",
