@@ -50,6 +50,7 @@ contract d3vent {
         uint128 numJoined;      
         bool isJoinable;
         uint withdrawalDate;
+        string description;
     }
 
     event_[] events;
@@ -142,7 +143,8 @@ contract d3vent {
         string calldata _playbackUri,
         uint _dateTime,
         uint _duration,
-        bool _isJoinable
+        bool _isJoinable,
+        string calldata _description
         ) external {
         require(_dateTime > block.timestamp, "date/time in past");
 
@@ -156,6 +158,7 @@ contract d3vent {
         newEvent.dateTime = _dateTime;
         newEvent.duration = _duration;
         newEvent.isJoinable = _isJoinable;
+        newEvent.description = _description;
 
         organiserEventIds[msg.sender].push(newEvent.id);
 

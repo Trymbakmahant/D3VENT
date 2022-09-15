@@ -63,8 +63,10 @@ const ParticipatedEvent = () => {
 
     event = event[0];
 
-    const joinEventHandler = () => {
-        if(ctx.sharedState.streamKey.playbackId.length !== 0 ){
+    const joinEventHandler = async () => {
+        const event = await ctx.sharedState.getSingleEvent(id);
+
+        if(event.isJoinable){
             setIsEventStarted(true);
             navigate(`/events/${ctx.sharedState.streamKey.playbackId}`);
         }else{
