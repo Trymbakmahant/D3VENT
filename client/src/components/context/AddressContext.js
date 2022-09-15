@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
+import { useNavigate } from "react-router-dom";
+
 import contractABI from "../../constants/abi.json";
 import addressOfContract from "../../constants/contractAddress";
 
@@ -24,6 +26,7 @@ const web3modal = new web3Modal({
 
 const AppWrapper = (props) => {
   const [isConnected, setIsConnected] = useState(false);
+  const [allEvents, setAllEvents] = useState();
   const [accountAddress, setAccountAddress] = useState("");
   const [showStreamKey, setShowStreamKey] = useState(false);
   const [streamKey, setStreamKey] = useState({
@@ -36,11 +39,14 @@ const AppWrapper = (props) => {
     contract: null,
   });
 
-  /** contract Address and contract ABI  */
+  const navigate = useNavigate();
+
+    /** contract Address and contract ABI  */
   const contractAddress = addressOfContract;
   const ABI = contractABI;
 
   useEffect(() => {
+    navigate('/');  
     connectWalletHandler();
   }, []);
 
@@ -62,6 +68,7 @@ const AppWrapper = (props) => {
         contract: contract,
       };
     });
+      getAllEvents(contract);
   };
   /**connectWalletHandler() ends here */
 
@@ -107,80 +114,103 @@ const AppWrapper = (props) => {
   const addOrganiser = async (eventId, newOrganiserAddress) => {};
   /**addOrganiser ends here */
 
-  /**Sets if an event is joinable or not */
-  const setEventIsJoinable = async (eventId, isJoinable) => {};
-  /**setEventIsJoinable ends here */
 
-  /**Adds a new Event in the events array */
-  const createNewEvent = async (name, uri, date, price, capacity) => {
-    //That is how you need to call a function of smart contract @smoothy
-    const newEvent = await account.contract.createEvent(
-      name,
-      uri,
-      date,
-      price,
-      capacity,
-      true
-    ); //This function is not complete yet do not use it
+    /**Sets if an event is joinable or not */
+    const setEventIsJoinable = async (eventId, isJoinable) =>{
+        const tx = await account.contract.setEventIsJoinable(eventId, isJoinable);
 
-    await newEvent.wait();
-  };
-  /**createNewEvent ends here */
+        await tx.wait();
 
-  /** Function to get a single event based on eventId */
-  const getSingleEvent = async (eventId) => {
-    const tx = await account.contract.getEvent(eventId);
+        console.log(tx);
+    }
+    /**setEventIsJoinable ends here */
 
-    console.log("Single event is ", tx);
-  };
-  /** getSingleEvent() ends here */
+    // This function will get all the events ever registered
+    const getAllEvents = async (contract) => {
+      
+        const  allEvents = await contract.getAllEvents();
+        setAllEvents(allEvents);
 
-  const getOrganisedEvents = async () => {
-    const organisedEvents = await account.contract.getOrganiserEventIds(
-      accountAddress
+
+        
+    }
+    // getAllEvents ends here
+
+    /**Adds a new Event in the events array */
+    const createNewEvent = async (name, uri, date, description) => {
+
+        //That is how you need to call a function of smart contract @smoothy
+        const newEvent = await account.contract.createEvent(name, uri,'', date, 0, false); //This function is not complete yet do not use it
+
+        await newEvent.wait();
+    }
+    /**createNewEvent ends here */
+
+    
+
+    /** Function to get a single event based on eventId */
+    const getSingleEvent = async (eventId) =>{
+
+        const tx = await account.contract.getEvent(eventId);
+
+        return tx;
+
+    };
+    /** getSingleEvent() ends here */
+
+
+    const getOrganisedEvents = async () => {
+
+        const organisedEvents = await account.contract.getOrganiserEventIds(accountAddress);
+
+        const num = organisedEvents.map((organisedEvent) => {
+            return Number(organisedEvent._hex)
+        });
+
+       return num;
+    }
+
+
+    const getUserEvents = async () => {
+        const userEvents = await account.contract.getUserEventIds(accountAddress);
+
+        console.log(userEvents);
+    }
+
+    const canGoLive = (streamKey, playbackId) => {
+        setStreamKey((prevState) => {
+            return {
+                currentKey: streamKey,
+                ingestUrl: `srt://rtmp.livepeer.com:2935?${streamKey}`,
+                playbackId: playbackId
+            }
+        })
+        setShowStreamKey(true);
+    }
+    /**This state is shared accross all the components => add any function or variable to use it in other component */
+    const sharedState = {
+        createNewEvent,
+        provideWorldCoinAddress,
+        showStreamKey,
+        streamKey,
+        canGoLive,
+        accountAddress,
+        getOrganisedEvents,
+        connectWalletHandler,
+        isConnected,
+        getUserEvents,
+        getSingleEvent,
+        setEventIsJoinable,
+        getAllEvents,
+        allEvents
+    };
+
+    return (
+        <AppContext.Provider value = {{sharedState}}>
+            {props.children}
+        </AppContext.Provider>
     );
 
-    console.log(organisedEvents);
-    const num = Number(organisedEvents[0]._hex);
-    console.log(num);
-  };
-
-  const getUserEvents = async () => {
-    const userEvents = await account.contract.getUserEventIds(accountAddress);
-
-    console.log(userEvents);
-  };
-
-  const canGoLive = (streamKey, playbackId) => {
-    setStreamKey((prevState) => {
-      return {
-        currentKey: streamKey,
-        ingestUrl: `srt://rtmp.livepeer.com:2935?${streamKey}`,
-        playbackId: playbackId,
-      };
-    });
-    setShowStreamKey(true);
-  };
-  /**This state is shared accross all the components => add any function or variable to use it in other component */
-  const sharedState = {
-    createNewEvent,
-    provideWorldCoinAddress,
-    showStreamKey,
-    streamKey,
-    canGoLive,
-    accountAddress,
-    getOrganisedEvents,
-    connectWalletHandler,
-    isConnected,
-    getUserEvents,
-    getSingleEvent,
-  };
-
-  return (
-    <AppContext.Provider value={{ sharedState }}>
-      {props.children}
-    </AppContext.Provider>
-  );
 };
 
 export default AppWrapper;

@@ -1,76 +1,56 @@
-import { useParams } from 'react-router-dom'
+import classes from "./HostedEvent.module.css";
 
-import ShowDetails from './ShowDetails'
-import Live from '../Live/Live'
+import { useParams } from "react-router-dom";
 
-const DUMMY_HOSTED = [
-  {
-    name: 'Dummy event',
-    eventId: 1,
-    price: '1 Ether',
-    capacity: 500,
-    numJoined: 100,
-    date: '1-10-2022',
-    time: '10 AM',
-  },
-  {
-    name: 'Dummy event2',
-    eventId: 2,
-    price: '1 Ether',
-    capacity: 500,
-    numJoined: 96,
-    date: '1-10-2022',
-    time: '10 AM',
-  },
-  {
-    name: 'Dummy event3',
-    eventId: 3,
-    price: '1 Ether',
-    capacity: 500,
-    numJoined: 100,
-    date: '1-10-2022',
-    time: '10 AM',
-  },
-  {
-    name: 'Dummy even4',
-    eventId: 4,
-    price: '1 Ether',
-    capacity: 500,
-    numJoined: 100,
-    date: '1-10-2022',
-    time: '10 AM',
-  },
-  {
-    name: 'Dummy even5',
-    eventId: 5,
-    price: '1 Ether',
-    capacity: 500,
-    numJoined: 100,
-    date: '1-10-2022',
-    time: '10 AM',
-  },
-]
+import ShowDetails from "./ShowDetails";
+import Live from "../Live/Live";
+
+import { useContext } from "react";
+import { AppContext } from "../context/AddressContext";
 
 const HostedEvent = () => {
-  let { id } = useParams()
+  const ctx = useContext(AppContext);
+  let { id } = useParams();
 
-  let event = DUMMY_HOSTED.filter((singleEvent) => singleEvent.eventId == id)
+  const eventList = ctx.sharedState.allEvents;
 
-  event = event[0]
+  let event = eventList.filter((singleEvent) => Number(singleEvent.id) == id);
+
+  let dateValue = new Date(Number(event[0].dateTime));
+
+  dateValue = dateValue.toString();
+
+  const date = dateValue.substr(0, 15);
+  let time = dateValue.split(" ")[4];
+
+  time = time.substr(0, 2);
+
+  const NumberTime = +time;
+
+  if (NumberTime > 12) {
+    NumberTime -= 12;
+    time = NumberTime.toString() + " PM";
+  } else {
+    time = time + " AM";
+  }
 
   return (
-    <div className='knowmore'>
-      <h1>{event.name}</h1>
-      <h2>{event.price}</h2>
-      <h2>
-        {event.numJoined}/{event.capacity} people Joined
-      </h2>
-      <h2>Date: {event.date}</h2>
-      <h2>Time: {event.time}</h2>
+    <div className={classes.knowmore}>
+      <h1 className={classes.title}>{event[0].name}</h1>
+      <img src={event[0].uri} alt="event image" />
+      <div className= {classes.details}>
+        <div>
+          <h2>{Number(event[0].numJoined)} people Joined</h2>
+        </div>
+        <div>
+          <h2>Date: {date}</h2>
+          <h2>At: {time}</h2>
+        </div>
+      </div>
       <Live />
       <ShowDetails />
     </div>
-  )
-}
+  );
+};
 
-export default HostedEvent
+export default HostedEvent;
