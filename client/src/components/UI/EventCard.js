@@ -22,8 +22,8 @@ const EventCard = (props) => {
     // 12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq
     return <div className= {classes.card}>
         <h1>{props.name}</h1>
-        <img src = 'https://drive.google.com/uc?export=view&id=12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq'/>
-        <h2>{props.numJoined}/{props.capacity} People Joined</h2>
+        <img src = {props.thumbnail}/>
+        <h2>{props.numJoined} People Joined</h2>
         <Button classes = {`${classes.btn}`} onClick = {singleEventHandler}>Know More</Button>
     </div>
 }

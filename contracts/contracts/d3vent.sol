@@ -11,8 +11,9 @@ contract d3vent {
     event NewOrganiser(uint indexed eventId, address newOrganiser);
     event AdminAdded(address indexed newAdmin, address indexed addedBy);
     event AdminDeleted(address indexed deletedAdmin, address indexed deletedBy);
-    event WorldcoinAddressChanged(address indexed newAddress, address indexed changedBy);
+
     event UserVerified(address indexed user);
+    event EventPlaybackUriUpdated(uint indexed eventId, string playbackUri);
 
     using ByteHasher for bytes;
 
@@ -25,15 +26,15 @@ contract d3vent {
     /// @dev The World ID group ID (always 1)
     uint256 internal immutable groupId = 1;
 
-    address public worldcoin;  //note: this is immutable in Worlcoin's example contract and private
+    //address public worldcoin;
     
     /// @dev Whether a nullifier hash has been used already. Used to guarantee an action is only performed once by a single person
     mapping(uint256 => bool) internal nullifierHashes;
 
     
-    uint eventIds;
-    uint immutable withdrawalBuffer;
-    uint adminsCount;
+    uint public eventIds;
+    uint public immutable withdrawalBuffer;
+    uint public adminsCount;
     
 
     struct event_ {
@@ -41,12 +42,15 @@ contract d3vent {
         uint id;
         string name;
         string uri;
+        string playbackUri;
         uint dateTime;
-        uint price;
-        uint128 capacity;
+        uint duration;
+        //uint price;
+        //uint128 capacity;
         uint128 numJoined;      
         bool isJoinable;
         uint withdrawalDate;
+        string description;
     }
 
     event_[] events;
@@ -60,6 +64,7 @@ contract d3vent {
     mapping(address => bool) public isAdmin;   // admin address to bool
 
     constructor (uint _withdrawalBuffer, IWorldID _worldId) {
+        require(_worldId != IWorldID(address(0)), "zero address is invalid");
         isAdmin[msg.sender] = true;
         adminsCount = 1;
         worldId = _worldId;
@@ -71,12 +76,6 @@ contract d3vent {
         selfdestruct(payable(msg.sender));
     }
 
-
-    function setWorldcoinAddress(address _addr) external onlyAdmins {
-        require(_addr != address(0), "invalid address 0");
-        worldcoin = _addr;
-        emit WorldcoinAddressChanged(_addr, msg.sender);
-    }
 
     /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
     /// @param root The root of the Merkle tree (returned by the JS widget).
@@ -141,10 +140,11 @@ contract d3vent {
     function createEvent(
         string calldata _name,
         string calldata _uri,
+        string calldata _playbackUri,
         uint _dateTime,
-        uint _price,
-        uint128 _capacity,
-        bool _isJoinable
+        uint _duration,
+        bool _isJoinable,
+        string calldata _description
         ) external {
         require(_dateTime > block.timestamp, "date/time in past");
 
@@ -154,10 +154,11 @@ contract d3vent {
         newEvent.id = eventIds++;
         newEvent.name = _name;
         newEvent.uri = _uri;
+        newEvent.playbackUri = _playbackUri;
         newEvent.dateTime = _dateTime;
-        newEvent.price = _price;
-        newEvent.capacity = _capacity;
+        newEvent.duration = _duration;
         newEvent.isJoinable = _isJoinable;
+        newEvent.description = _description;
 
         organiserEventIds[msg.sender].push(newEvent.id);
 
@@ -184,7 +185,7 @@ contract d3vent {
     function joinEvent(uint _id) external payable {
         require(_id <= eventIds, "invalid event id");
         require(events[_id].isJoinable, "cant join at this time");
-        require(msg.value == events[_id].price, "send event price");
+        //require(msg.value == events[_id].price, "send event price");
         require(! isJoined[_id][msg.sender], "already joined");
 
         ++events[_id].numJoined;
@@ -200,6 +201,11 @@ contract d3vent {
         return events[_id];
     }
 
+    // @dev returns the whole events array
+    function getAllEvents() external view returns (event_[] memory) {
+        return events;
+    }
+
 
     // @dev returns array of created event ids for organiser address
     function getOrganiserEventIds(address _organiser) external view returns(uint[] memory) {
@@ -210,6 +216,14 @@ contract d3vent {
     // @dev returns array of joined event ids for user address
     function getUserEventIds(address _user) external view returns(uint[] memory) {
         return userEventIds[_user];
+    }
+
+
+    // @dev returns array of joined event ids for user address
+    function setEventPlaybackUri(uint _id, string calldata _playbackUri) external onlyOrganiser(_id) {
+        require(_id < events.length, "invalid event id");
+        events[_id].playbackUri = _playbackUri;
+        emit EventPlaybackUriUpdated(_id, _playbackUri);
     }
 
     

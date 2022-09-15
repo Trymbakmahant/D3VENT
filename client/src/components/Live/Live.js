@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import classes from "./Live.module.css";
 
-import Button from "../UI/Button";
-import { AppContext } from "../context/AddressContext";
+import { useContext, useState } from "react";
+import Button from '../UI/Button'
+import { AppContext } from '../context/AddressContext'
 
 const Live = (props) =>{
     const [isWrongDate, setIsWrongDate] = useState(false);
@@ -39,12 +40,13 @@ const Live = (props) =>{
 
     return (
         <div>
-            <Button classes = 'btn-error btn-wide' onClick = {goLiveHandler}>
+            <Button classes = {`btn-error btn-wide ${classes.adjust}`} onClick = {goLiveHandler}>
                 <i class="fa-regular fa-signal-stream fa-2x"></i>&nbsp; Go Live
             </Button>
             {isWrongDate && <h1>Can't go Live now. Either you are trying to go live before or after the event date and time.</h1>}
         </div>
     )
-};
+  
+}
 
-export default Live;
+export default Live

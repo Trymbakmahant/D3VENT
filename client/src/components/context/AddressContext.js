@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
+import { useNavigate } from "react-router-dom";
+
 import contractABI from "../../constants/abi.json";
 import addressOfContract from "../../constants/contractAddress";
 
@@ -8,63 +10,67 @@ import CoinbaseWalletSDK from "@coinbase/wallet-sdk";
 
 import web3Modal from "web3modal";
 
-
 export const AppContext = createContext();
 
 const web3modal = new web3Modal({
-    providerOptions: {
-        walletlink: {
-            package: CoinbaseWalletSDK, // Required
-            options: {
-              appName: "Web 3 Modal Demo", // Required
-              infuraId: process.env.INFURA_KEY // Required unless you provide a JSON RPC url; see `rpc` below
-            }
-        }
-    }
+  providerOptions: {
+    walletlink: {
+      package: CoinbaseWalletSDK, // Required
+      options: {
+        appName: "Web 3 Modal Demo", // Required
+        infuraId: process.env.INFURA_KEY, // Required unless you provide a JSON RPC url; see `rpc` below
+      },
+    },
+  },
 });
 
-const AppWrapper = (props) =>{
-    const [isConnected, setIsConnected] = useState(false);
-    const [accountAddress, setAccountAddress] = useState('');
-    const [showStreamKey, setShowStreamKey] = useState(false);
-    const [streamKey, setStreamKey] = useState({
-        currentKey: '',
-        ingestUrl: '',
-        playbackId: ''
-    });
-    const [account, setAccount] = useState({
-        signer: null,
-        contract: null
-    });
+const AppWrapper = (props) => {
+  const [isConnected, setIsConnected] = useState(false);
+  const [allEvents, setAllEvents] = useState();
+  const [accountAddress, setAccountAddress] = useState("");
+  const [showStreamKey, setShowStreamKey] = useState(false);
+  const [streamKey, setStreamKey] = useState({
+    currentKey: "",
+    ingestUrl: "",
+    playbackId: "",
+  });
+  const [account, setAccount] = useState({
+    signer: null,
+    contract: null,
+  });
+
+  const navigate = useNavigate();
 
     /** contract Address and contract ABI  */
-        const contractAddress = addressOfContract;
-        const ABI = contractABI;
+  const contractAddress = addressOfContract;
+  const ABI = contractABI;
 
-    useEffect(() => {
-        connectWalletHandler();
-    }, [])
+  useEffect(() => {
+    navigate('/');  
+    connectWalletHandler();
+  }, []);
 
-    /** Function connectWalletHandler() sets the account Address */
-    const connectWalletHandler = async () => {
-        const provider = await web3modal.connect();
-        const library = new ethers.providers.Web3Provider(provider);
-        const getSigner = library.getSigner();
-        const contract = new ethers.Contract(contractAddress, ABI, getSigner);
-        const accounts = await library.listAccounts();
-        setIsConnected(true);
+  /** Function connectWalletHandler() sets the account Address */
+  const connectWalletHandler = async () => {
+    const provider = await web3modal.connect();
+    const library = new ethers.providers.Web3Provider(provider);
+    const getSigner = library.getSigner();
+    const contract = new ethers.Contract(contractAddress, ABI, getSigner);
+    const accounts = await library.listAccounts();
+    setIsConnected(true);
 
-        setAccountAddress(accounts[0]);
+    setAccountAddress(accounts[0]);
 
-        setAccount((prevState) => {
-            return {
-                ...prevState,
-                signer: getSigner,
-                contract: contract
-            }
-        });
-    }
-    /**connectWalletHandler() ends here */
+    setAccount((prevState) => {
+      return {
+        ...prevState,
+        signer: getSigner,
+        contract: contract,
+      };
+    });
+      getAllEvents(contract);
+  };
+  /**connectWalletHandler() ends here */
 
   /**This function provides worldcoin address to contract in order to verify them onchain */
   const provideWorldCoinAddress = async (
@@ -86,7 +92,8 @@ const AppWrapper = (props) =>{
         signal,
         root1,
         nullifier,
-        unpackedProof
+        unpackedProof,
+        { gasLimit: 600000 }
       );
       console.log("success");
     } catch (err) {
@@ -103,13 +110,9 @@ const AppWrapper = (props) =>{
   const deleteAdmin = async (adminAddress) => {};
   /**deleteAdmin() ends here */
 
-
-
-    /**Adds a new organiser of the existing event based on eventId */
-    const addOrganiser = async (eventId, newOrganiserAddress) => {
-
-    }
-    /**addOrganiser ends here */
+  /**Adds a new organiser of the existing event based on eventId */
+  const addOrganiser = async (eventId, newOrganiserAddress) => {};
+  /**addOrganiser ends here */
 
 
     /**Sets if an event is joinable or not */
@@ -122,12 +125,22 @@ const AppWrapper = (props) =>{
     }
     /**setEventIsJoinable ends here */
 
+    // This function will get all the events ever registered
+    const getAllEvents = async (contract) => {
+      
+        const  allEvents = await contract.getAllEvents();
+        setAllEvents(allEvents);
+
+
+        
+    }
+    // getAllEvents ends here
 
     /**Adds a new Event in the events array */
-    const createNewEvent = async (name, uri, date, price, capacity) => {
+    const createNewEvent = async (name, uri, date, description) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, uri, date, price, capacity, false); //This function is not complete yet do not use it
+        const newEvent = await account.contract.createEvent(name, uri,'', date, 0, false); //This function is not complete yet do not use it
 
         await newEvent.wait();
     }
@@ -154,7 +167,7 @@ const AppWrapper = (props) =>{
             return Number(organisedEvent._hex)
         });
 
-        console.log(num);
+       return num;
     }
 
 
@@ -187,7 +200,9 @@ const AppWrapper = (props) =>{
         isConnected,
         getUserEvents,
         getSingleEvent,
-        setEventIsJoinable
+        setEventIsJoinable,
+        getAllEvents,
+        allEvents
     };
 
     return (
@@ -195,6 +210,7 @@ const AppWrapper = (props) =>{
             {props.children}
         </AppContext.Provider>
     );
+
 };
 
 export default AppWrapper;
