@@ -66,7 +66,7 @@ const HostedEvent = () =>{
             <h2>{event.numJoined}/{event.capacity} people Joined</h2>
             <h2>Date: {event.date}</h2>
             <h2>Time: {event.time}</h2>
-            <Live />
+            <Live eventId = {id}/>
            <ShowDetails />
     </div>
 };

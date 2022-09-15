@@ -114,7 +114,11 @@ const AppWrapper = (props) =>{
 
     /**Sets if an event is joinable or not */
     const setEventIsJoinable = async (eventId, isJoinable) =>{
+        const tx = await account.contract.setEventIsJoinable(eventId, isJoinable);
 
+        await tx.wait();
+
+        console.log(tx);
     }
     /**setEventIsJoinable ends here */
 
@@ -123,7 +127,7 @@ const AppWrapper = (props) =>{
     const createNewEvent = async (name, uri, date, price, capacity) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, uri, date, price, capacity, true); //This function is not complete yet do not use it
+        const newEvent = await account.contract.createEvent(name, uri, date, price, capacity, false); //This function is not complete yet do not use it
 
         await newEvent.wait();
     }
@@ -136,7 +140,7 @@ const AppWrapper = (props) =>{
 
         const tx = await account.contract.getEvent(eventId);
 
-        console.log('Single event is ', tx);
+        return tx;
 
     };
     /** getSingleEvent() ends here */
@@ -146,8 +150,10 @@ const AppWrapper = (props) =>{
 
         const organisedEvents = await account.contract.getOrganiserEventIds(accountAddress);
 
-        console.log(organisedEvents);
-        const num = Number(organisedEvents[0]._hex)
+        const num = organisedEvents.map((organisedEvent) => {
+            return Number(organisedEvent._hex)
+        });
+
         console.log(num);
     }
 
@@ -180,7 +186,8 @@ const AppWrapper = (props) =>{
         connectWalletHandler,
         isConnected,
         getUserEvents,
-        getSingleEvent
+        getSingleEvent,
+        setEventIsJoinable
     };
 
     return (
