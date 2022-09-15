@@ -1,3 +1,2 @@
-const addressofContract = '0x3cFd8D9A342D388aC6e904522028d640d90d7645'
+const addressofContract = '0x81B62cBfF9608e760907d886bc4E1c0dD4d0a203'
 export default addressofContract;
-
