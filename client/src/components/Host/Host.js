@@ -76,7 +76,7 @@ const formSubmitHandler = (event) => {
   const nonFormatDate = formInput.date + ' ' + time
   let someDate = Number(new Date(nonFormatDate));
 
-  console.log(someDate);
+  //console.log(someDate);
 
   let imageId = formInput.thumbnail.split('/')[5]
   let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`

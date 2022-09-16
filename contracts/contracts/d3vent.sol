@@ -137,6 +137,11 @@ contract d3vent {
         isAdmin[_newAdmin] = false;
     }
 
+    
+    function isEventJoined(uint _id) external view returns(bool) {
+        return isJoined[_id][msg.sender];
+    }
+
 
     function createEvent(
         string calldata _name,

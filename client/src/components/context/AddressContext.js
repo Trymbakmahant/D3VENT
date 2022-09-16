@@ -131,8 +131,6 @@ const AppWrapper = (props) => {
         const  allEvents = await contract.getAllEvents();
         setAllEvents(allEvents);
 
-
-        
     }
     // getAllEvents ends here
 
@@ -140,7 +138,7 @@ const AppWrapper = (props) => {
     const createNewEvent = async (name, uri, date, description) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, uri,'', date, 0, false); //This function is not complete yet do not use it
+        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); //This function is not complete yet do not use it
 
         await newEvent.wait();
     }
