@@ -38,7 +38,8 @@ const main = async () => {
     await d3ventContract.createEvent("second event", "not safe for work", "https://drive.google.com/file/d/1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx/view?usp=sharing", "https://livepeer.org/456",    1673994265000, 3600000, true)
     await d3ventContract.createEvent("thrid event", "meet the geeks", "https://drive.google.com/file/d/1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj/view?usp=sharing", "https://livepeer.org/789",     1683994265000, 5400000, true)
     await d3ventContract.createEvent("fourth event", "mumbai networking", "https://drive.google.com/file/d/1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx/view?usp=sharing", "https://livepeer.org/101112", 1686994265000, 7200000, true)
-    await d3ventContract.createEvent("fifth event", "premier of latest movie", "https://drive.google.com/file/d/1DfNtVTT51M5FWwArvf3Bpme4M3Qadzku/view?usp=sharing", "https://livepeer.org/131415",  1685994265000, 9000000, false)
+    await d3ventContract.createEvent("fifth event", "premier of latest movie", "https://drive.google.com/file/d/1DfNtVTT51M5FWwArvf3Bpme4M3Qadzku/view?usp=sharing", "https://livepeer.org/131415",  1685994265000, 9000000, true)
+
 
 
   } catch (error) {
