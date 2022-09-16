@@ -76,7 +76,7 @@ const AppWrapper = (props) => {
       ["uint256[8]"],
       proof
     )[0];
-    console.log("hello world coin");
+
     const root1 = ethers.BigNumber.from(root);
     const nullifier = ethers.BigNumber.from(nullifierHash);
     console.log(root1);
