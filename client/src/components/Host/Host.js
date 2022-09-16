@@ -76,7 +76,7 @@ const formSubmitHandler = (event) => {
   const nonFormatDate = formInput.date + ' ' + time
   let someDate = Number(new Date(nonFormatDate));
 
-  console.log(someDate);
+  //console.log(someDate);
 
   let imageId = formInput.thumbnail.split('/')[5]
   let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
@@ -132,7 +132,7 @@ return (
       <Input
         type='text'
         label='Thumbnail'
-        placeholder='A link to the thumbnail of event (Google Drive link)'
+        placeholder='Thumbnail of the event (Google Drive link)'
         inputChange={inputHandler}
       />
       <Button classes='btn-primary btn-wide'>Submit Event</Button>

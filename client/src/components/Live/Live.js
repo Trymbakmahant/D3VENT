@@ -11,7 +11,7 @@ const Live = (props) =>{
     
     const goLiveHandler = async () => {
 
-        const event = await ctx.sharedState.getSingleEvent(5);  //pass props.eventId later here
+        const event = await ctx.sharedState.getSingleEvent(props.eventId);  //pass props.eventId later here
 
         let eventDate = Number(event.dateTime);
         eventDate = new Date(eventDate).toString();

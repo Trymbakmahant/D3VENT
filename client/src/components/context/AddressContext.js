@@ -131,8 +131,6 @@ const AppWrapper = (props) => {
         const  allEvents = await contract.getAllEvents();
         setAllEvents(allEvents);
 
-
-        
     }
     // getAllEvents ends here
 
@@ -140,13 +138,17 @@ const AppWrapper = (props) => {
     const createNewEvent = async (name, uri, date, description) => {
 
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, uri,'', date, 0, false); //This function is not complete yet do not use it
+        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); 
 
         await newEvent.wait();
     }
     /**createNewEvent ends here */
 
-    
+    const isEventJoined = async (id) => {
+      const isJoined = await account.contract.isJoined(id, accountAddress);
+      console.log(isJoined);
+      return isJoined;
+    }
 
     /** Function to get a single event based on eventId */
     const getSingleEvent = async (eventId) =>{
@@ -158,6 +160,17 @@ const AppWrapper = (props) => {
     };
     /** getSingleEvent() ends here */
 
+
+    const getUserEventIds = async () => {
+      const ids = await account.contract.getUserEventIds(accountAddress);
+      return ids;
+    }
+
+    const joinEvent = async (id) => {
+      const tx = await account.contract.joinEvent(id);
+
+      await tx.wait();
+    }
 
     const getOrganisedEvents = async () => {
 
@@ -174,7 +187,6 @@ const AppWrapper = (props) => {
     const getUserEvents = async () => {
         const userEvents = await account.contract.getUserEventIds(accountAddress);
 
-        console.log(userEvents);
     }
 
     const canGoLive = (streamKey, playbackId) => {
@@ -202,7 +214,10 @@ const AppWrapper = (props) => {
         getSingleEvent,
         setEventIsJoinable,
         getAllEvents,
-        allEvents
+        allEvents,
+        isEventJoined,
+        joinEvent,
+        getUserEventIds
     };
 
     return (

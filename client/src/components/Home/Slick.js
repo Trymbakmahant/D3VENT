@@ -18,7 +18,7 @@ const Slick = () => {
     autoplay: true,
   };
 
-  // console.log(ctx.sharedState.allEvents);
+  
 
 
   return (
@@ -41,7 +41,7 @@ const Slick = () => {
             <img src={ctx.sharedState.allEvents[3].uri} />
           </div>
           <div>
-            <img src={ctx.sharedState.allEvents[5].uri} />
+            <img src={ctx.sharedState.allEvents[4].uri} />
           </div>
           <div>
           <img src={"./"} />
@@ -51,6 +51,7 @@ const Slick = () => {
           : <></>  }
     </div>
   );
+
 };
 
 export default Slick;
