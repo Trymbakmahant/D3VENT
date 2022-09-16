@@ -2,6 +2,7 @@ import Input from '../UI/Input'
 import Button from '../UI/Button'
 import { useState, useContext } from 'react' //import useContext
 import { AppContext } from '../context/AddressContext' // import Appcontext
+import classes from './Host.module.css'
 
 const Host = () => {
   const [formInput, setFormInput] = useState({
@@ -39,7 +40,7 @@ const Host = () => {
         break
       case 'Description':
         setFormInput((prevState) => {
-          return {...prevState, description: inputValue}
+          return { ...prevState, description: inputValue }
         })
         break
       case 'Date':
@@ -61,83 +62,83 @@ const Host = () => {
         break
     }
   }
-const formSubmitHandler = (event) => {
-  event.preventDefault()
-  // console.log(formInput);
+  const formSubmitHandler = (event) => {
+    event.preventDefault()
+    // console.log(formInput);
 
-  let time = formInput.time
+    let time = formInput.time
 
-  if (formInput.timeFormat === 'PM') {
-    time = +formInput.time + 12
+    if (formInput.timeFormat === 'PM') {
+      time = +formInput.time + 12
+    }
+
+    time = time.toString() + ':00'
+
+    const nonFormatDate = formInput.date + ' ' + time
+    let someDate = Number(new Date(nonFormatDate))
+
+    //console.log(someDate);
+
+    let imageId = formInput.thumbnail.split('/')[5]
+    let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
+
+    ctx.sharedState.createNewEvent(
+      formInput.name,
+      imageUrl,
+      someDate,
+      formInput.description
+    )
   }
 
-  time = time.toString() + ':00'
-
-  const nonFormatDate = formInput.date + ' ' + time
-  let someDate = Number(new Date(nonFormatDate));
-
-  //console.log(someDate);
-
-  let imageId = formInput.thumbnail.split('/')[5]
-  let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
-
-  ctx.sharedState.createNewEvent(
-    formInput.name,
-    imageUrl,
-    someDate,
-    formInput.description
+  return (
+    <div>
+      <form className='Form1' onSubmit={formSubmitHandler}>
+        <Input
+          type='text'
+          label='Event Name'
+          placeholder='Enter your event name'
+          inputChange={inputHandler}
+        />
+        <Input
+          type='text'
+          label='Description'
+          placeholder='Tell us Something about the event'
+          inputChange={inputHandler}
+        />
+        <Input
+          type='date'
+          label='Date'
+          placeholder='Enter event date'
+          min={currentDate}
+          inputChange={inputHandler}
+        />
+        <Input
+          type='number'
+          label='Time'
+          placeholder="What's the timing of event"
+          min='1'
+          max='12'
+          inputChange={inputHandler}
+        />
+        <select
+          class='select select-info w-full max-w-xs'
+          onChange={timeFormatHandler}
+        >
+          <option disabled selected>
+            AM/PM
+          </option>
+          <option>AM</option>
+          <option>PM</option>
+        </select>
+        <Input
+          type='text'
+          label='Thumbnail'
+          placeholder='Thumbnail of the event (Google Drive link)'
+          inputChange={inputHandler}
+        />
+        <Button classes='btn-primary btn-wide'>Submit Event</Button>
+      </form>
+    </div>
   )
 }
-
-return (
-  <div>
-    <form className='Form1' onSubmit={formSubmitHandler}>
-      <Input
-        type='text'
-        label='Event Name'
-        placeholder='Enter your event name'
-        inputChange={inputHandler}
-      />
-      <Input
-        type = "text"
-        label = "Description"
-        placeholder = "Tell us Something about the event"
-        inputChange = {inputHandler}
-      />
-      <Input
-        type='date'
-        label='Date'
-        placeholder='Enter event date'
-        min={currentDate}
-        inputChange={inputHandler}
-      />
-      <Input
-        type='number'
-        label='Time'
-        placeholder="What's the timing of event"
-        min='1'
-        max='12'
-        inputChange={inputHandler}
-      />
-      <select
-        class='select select-info w-full max-w-xs'
-        onChange={timeFormatHandler}
-      >
-        <option disabled selected>
-          AM/PM
-        </option>
-        <option>AM</option>
-        <option>PM</option>
-      </select>
-      <Input
-        type='text'
-        label='Thumbnail'
-        placeholder='Thumbnail of the event (Google Drive link)'
-        inputChange={inputHandler}
-      />
-      <Button classes='btn-primary btn-wide'>Submit Event</Button>
-    </form>
-  </div>
-)
-}
-export default Host;
+export default Host

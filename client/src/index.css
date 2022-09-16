@@ -26,19 +26,7 @@ code {
 .btn-error{
   margin-left: 100px;
 }
-.dvideo{
-  font-weight: 700;
-  text-align: center;
-  margin-top: 1rem;
-  font-size: large;
-        
-}
-.ddvideo{
-  justify-content: center;
-    align-items: center;
-      margin-left: 30%;
-      margin-top: 20px;
-}
+
 
 .divider {
   display: flex;

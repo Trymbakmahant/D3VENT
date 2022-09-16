@@ -1,10 +1,11 @@
 import React from 'react'
+import classes from './About.module.css'
 
 const About = () => {
   return (
     <div>
-      <h1 className='dvideo'> Demonstration video </h1>
-      <div className='ddvideo'>
+      <h1 className={classes.dvideo}> Demonstration video </h1>
+      <div className={classes.ddvideo}>
         <iframe
           width='700'
           height='400'
