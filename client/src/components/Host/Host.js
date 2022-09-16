@@ -132,7 +132,7 @@ return (
       <Input
         type='text'
         label='Thumbnail'
-        placeholder='A link to the thumbnail of event (Google Drive link)'
+        placeholder='Thumbnail of the event (Google Drive link)'
         inputChange={inputHandler}
       />
       <Button classes='btn-primary btn-wide'>Submit Event</Button>
