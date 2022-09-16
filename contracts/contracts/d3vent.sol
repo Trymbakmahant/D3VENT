@@ -182,7 +182,7 @@ contract d3vent {
 
 
     function setEventIsJoinable(uint _id, bool _isJoinable) external onlyOrganiser(_id) {
-        require(! events[_id].isJoinable, "already joinable");
+        //require(! events[_id].isJoinable, "already joinable");    // used for differnt purpose now
         events[_id].isJoinable = _isJoinable;
         emit JoinableSet(_id, _isJoinable);
     }
@@ -190,9 +190,9 @@ contract d3vent {
 
     function joinEvent(uint _id) external payable {
         require(_id <= eventIds, "invalid event id");
-        require(events[_id].isJoinable, "cant join at this time");
-        //require(msg.value == events[_id].price, "send event price");
-        require(! isJoined[_id][msg.sender], "already joined");
+        //require(events[_id].isJoinable, "cant join at this time");    // used for differnt purpose now
+        //require(msg.value == events[_id].price, "send event price");   // used for differnt purpose now
+        require(! isJoined[_id][msg.sender], "already joined");  // keep this check as it keeps a running total
 
         ++events[_id].numJoined;
         isJoined[_id][msg.sender] = true;
