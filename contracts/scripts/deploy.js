@@ -41,6 +41,7 @@ const main = async () => {
     await d3ventContract.createEvent("fifth event", "premier of latest movie", "https://drive.google.com/file/d/1DfNtVTT51M5FWwArvf3Bpme4M3Qadzku/view?usp=sharing", "https://livepeer.org/131415",  1685994265000, 9000000, true)
 
 
+
   } catch (error) {
     console.log("createEvent: ", error)
   }
