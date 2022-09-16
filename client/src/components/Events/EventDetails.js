@@ -13,6 +13,8 @@ const EventDetails = () => {
     const eventList = ctx.sharedState.allEvents;
   
     let event = eventList.filter((singleEvent) => Number(singleEvent.id) == id);
+
+    console.log('events is', event)
   
     let dateValue = new Date(Number(event[0].dateTime));
   
@@ -23,7 +25,7 @@ const EventDetails = () => {
   
     time = time.substr(0, 2);
   
-    const NumberTime = +time;
+    let NumberTime = +time;
   
     if (NumberTime > 12) {
       NumberTime -= 12;

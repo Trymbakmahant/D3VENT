@@ -23,6 +23,8 @@ const EventCard = (props) => {
             const singleEvent = await ctx.sharedState.getSingleEvent(props.id);
             if(singleEvent.organiser === ctx.sharedState.accountAddress){
                 navigate(`/hosted-events/${props.id}`);
+            }else{
+                navigate(`/participated-events/${props.id}`);
             }
         }
     };
