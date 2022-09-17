@@ -3,6 +3,7 @@
     justify-content: space-between;
     margin: 2% 3%;
     flex-wrap: wrap;
+    margin-top: 15px;
 }
 
 
@@ -10,7 +11,25 @@
     font-size: 1.5rem;
     padding-top: 4px;
 }
-
+.title {
+        display: flex;
+          
+            align-items: center;
+}
+.logo {
+    width: 40px;
+        height: auto;
+        /* aspect-ratio: 1 / 1; */
+        /* margin-right: 10px; */
+}
+.logoc{
+        cursor: pointer;
+            color: rgb(189, 231, 255);
+            font-weight: 600;
+            font-size: 20.8px;
+            display: block;
+            font-family: Inter, sans-serif;
+}
 .options {
     margin-left: 10%;
     display: flex;
