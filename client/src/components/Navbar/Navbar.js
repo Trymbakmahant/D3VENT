@@ -18,8 +18,8 @@ const Navbar = () => {
   }
 
   const activeStyle = {
-    borderBottom: '2px solid white',
-    color: 'white',
+    borderBottom: '2px solid hsl(var(--sf))',
+    color: 'hsl(var(--sf))',
   }
 
   return (

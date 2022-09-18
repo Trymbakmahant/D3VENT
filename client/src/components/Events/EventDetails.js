@@ -14,7 +14,6 @@ const EventDetails = () => {
   
     let event = eventList.filter((singleEvent) => Number(singleEvent.id) == id);
 
-    console.log('events is', event)
   
     let dateValue = new Date(Number(event[0].dateTime));
   
