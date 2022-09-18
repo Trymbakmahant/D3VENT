@@ -1,6 +1,6 @@
 const hre = require("hardhat");
 require("dotenv").config();
-const { NETWORKS_LOOKUP, POLYGON_SCAN_STUB } = require("./constants.js")
+const { NETWORKS_LOOKUP, POLYGON_SCAN_STUB, MUMBAI_SCAN_STUB, VERIFY_COMMAND } = require("./constants.js")
 
 const debug = false // extra console loggin
 
@@ -9,6 +9,7 @@ const adminAccounts = require('./adminTestAccounts');
 const { SignerWithAddress } = require("@nomiclabs/hardhat-ethers/signers.js");
 const { Signer } = require("ethers");
 let networkName, networkId, srs
+let d3ventContract
 
 assignSigners = async () => srs = await hre.ethers.getSigners()
   assignSigners()
@@ -17,11 +18,19 @@ assignSigners = async () => srs = await hre.ethers.getSigners()
 const main = async () => {
   console.log("contructor args:", constructorArgs)
 
-  const d3ventContractFactory = await hre.ethers.getContractFactory('d3vent');
-  const d3ventContract = await d3ventContractFactory.deploy(...constructorArgs);
-  await d3ventContract.deployed();
-  console.log("Contract deployed to: ", d3ventContract.address);
-  console.log(POLYGON_SCAN_STUB + d3ventContract.address);
+  try{
+    const d3ventContractFactory = await hre.ethers.getContractFactory('d3vent');
+    d3ventContract = await d3ventContractFactory.deploy(...constructorArgs);
+    await d3ventContract.deployed();
+    console.log("Contract deployed to: ", d3ventContract.address);
+    console.log(MUMBAI_SCAN_STUB + d3ventContract.address);
+    console.log(POLYGON_SCAN_STUB + d3ventContract.address);
+  } catch (error) {
+    console.log(error)
+    return
+  }
+
+  console.log("verify command: ", VERIFY_COMMAND.replace("<REPLACE WITH CONTRACT ADDRESS>", d3ventContract.address))
 
   const contractNetwork = await d3ventContract.provider.getNetwork()
   networkId = contractNetwork.chainId.toString()
