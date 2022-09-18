@@ -11,7 +11,6 @@ const EventCard = (props) => {
     const navigate = useNavigate();
 
     const singleEventHandler = async () => {
-        console.log(props.type);
 
         if(props.type === 'organiser'){
             navigate(`/hosted-events/${props.id}`);
@@ -28,7 +27,7 @@ const EventCard = (props) => {
             }
         }
     };
-    
+
     // 12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq
     return <div className= {classes.card}>
         <h1>{props.name}</h1>

@@ -15,7 +15,7 @@ const ParticipatedEvents = () => {
       const getIds = async () => {
         const ids = await ctx.sharedState.getUserEventIds();
         const allEvents = ctx.sharedState.allEvents;
-        console.log(allEvents[0].id);
+
         
         participatedEventsArray = []; 
         
@@ -39,7 +39,7 @@ const ParticipatedEvents = () => {
         <div className="grid grid-cols-3">
           {participatedEvents.map((event) => (
             <EventCard key={Number(event.id)} id = {Number(event.id)} name={event.name}
-            numJoined = {Number(event.numJoined)} type = "participant"/>
+            numJoined = {Number(event.numJoined)} thumbnail = {event.uri} type = "participant"/>
           ))}
         </div>
     )
