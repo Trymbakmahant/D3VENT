@@ -179,6 +179,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "actionId",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -477,6 +490,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "groupId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -641,6 +667,19 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_actionId",
+        "type": "string"
+      }
+    ],
+    "name": "setActionId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
@@ -670,6 +709,19 @@
       }
     ],
     "name": "setEventPlaybackUri",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_groupId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGroupId",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
