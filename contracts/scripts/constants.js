@@ -12,11 +12,13 @@ const NETWORKS_LOOKUP = new Map([
 
 const TARGET_NETWORK = "80001"; // Mumbai
 const MUMBAI_SCAN_STUB = "https://mumbai.polygonscan.com/address/"
-const POLYGON_SCAN_STUB = "https://polyscan.com/"
+const POLYGON_SCAN_STUB = "https://polygonscan.com/address/"
+const VERIFY_COMMAND = "npx hardhat verify --constructor-args scripts/constructorArgs.js <REPLACE WITH CONTRACT ADDRESS> --network mumbai"
 
 module.exports = {
     NETWORKS_LOOKUP,
     TARGET_NETWORK,
     MUMBAI_SCAN_STUB,
-    POLYGON_SCAN_STUB
+    POLYGON_SCAN_STUB,
+    VERIFY_COMMAND
 }

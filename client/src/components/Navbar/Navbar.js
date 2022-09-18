@@ -18,14 +18,15 @@ const Navbar = () => {
   }
 
   const activeStyle = {
-    borderBottom: '2px solid white',
-    color: 'white',
+    borderBottom: '2px solid hsl(var(--sf))',
+    color: 'hsl(var(--sf))',
   }
 
   return (
     <div className={classes.navbar}>
       <div className={classes.title}>
-        <img className='logo' src='logod3.png' />
+        <img className={classes.logo} src='logod3.png' />
+        <div className={classes.logoc}>EVENT</div>
       </div>
       <div className={classes.options}>
         <NavLink
@@ -54,7 +55,17 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div>
-        <Button classes = {`btn-secondary ${classes.connectBtn}`} onClick = {!isConnected && connectHandler}>{isConnected ? `${accountAddress.substring(0,4)}...${accountAddress.substring(38,42)}` : 'Connect Wallet'}</Button>
+        <Button
+          classes={`btn-secondary ${classes.connectBtn}`}
+          onClick={!isConnected && connectHandler}
+        >
+          {isConnected
+            ? `${accountAddress.substring(0, 4)}...${accountAddress.substring(
+                38,
+                42
+              )}`
+            : 'Connect Wallet'}
+        </Button>
       </div>
     </div>
   )

@@ -141,6 +141,11 @@ const AppWrapper = (props) => {
         const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); 
 
         await newEvent.wait();
+
+        navigate('/');
+
+        getAllEvents(account.contract);
+
     }
     /**createNewEvent ends here */
 

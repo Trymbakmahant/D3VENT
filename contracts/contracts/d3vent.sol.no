@@ -29,6 +29,8 @@ contract d3vent {
 
     /// @dev worldcoin action id used in verifyAndExecute
     string public actionId = "wid_staging_034a32eef8f9c2d4ac2cca30890c2e76";
+    string public actionIdChain = "wid_staging_034a32eef8f9c2d4ac2cca30890c2e76";   //on-chain engine id
+    string public actionIdCloud = "wid_staging_7a9456d25763ab09db907a6e9fdd289a";   //cloud engine id
 
     
     
@@ -113,6 +115,76 @@ contract d3vent {
         // Make sure to emit some kind of event afterwards!
         isVerified[signal] = true;
         emit UserVerified(signal);
+
+    }
+
+    event Log(string message);
+    function verifyChainId(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) public returns (string memory) {
+        // First, we make sure this person hasn't done this before
+        if (nullifierHashes[nullifierHash]) {
+            emit Log("nullifier already used");
+            return "fail: nullifier hash"; // revert InvalidNullifier();
+        }
+
+        // We now verify the provided proof is valid and the user is verified by World ID
+        worldId.verifyProof(
+            root,
+            groupId,
+            abi.encodePacked(signal).hashToField(),
+            nullifierHash,
+            abi.encodePacked(actionIdChain).hashToField(),
+            proof
+        );
+        
+        emit Log("proof done");
+
+        // We now record the user has done this, so they can't do it again (proof of uniqueness)
+        nullifierHashes[nullifierHash] = true;
+
+        // Finally, execute your logic here, for example issue a token, NFT, etc...
+        // Make sure to emit some kind of event afterwards!
+        isVerified[signal] = true;
+        emit UserVerified(signal);
+        return "success";
+    }
+
+    function verifyCloudId(
+        address signal,
+        uint256 root,
+        uint256 nullifierHash,
+        uint256[8] calldata proof
+    ) public returns (string memory) {
+        // First, we make sure this person hasn't done this before
+        if (nullifierHashes[nullifierHash]) {
+            emit Log("nullifier already used");
+            return "fail: nullifier hash"; // revert InvalidNullifier();
+        }
+        
+        // We now verify the provided proof is valid and the user is verified by World ID
+        worldId.verifyProof(
+            root,
+            groupId,
+            abi.encodePacked(signal).hashToField(),
+            nullifierHash,
+            abi.encodePacked(actionIdCloud).hashToField(),
+            proof
+        );
+
+        emit Log("proof done");
+
+        // We now record the user has done this, so they can't do it again (proof of uniqueness)
+        nullifierHashes[nullifierHash] = true;
+
+        // Finally, execute your logic here, for example issue a token, NFT, etc...
+        // Make sure to emit some kind of event afterwards!
+        isVerified[signal] = true;
+        emit UserVerified(signal);
+        return "success";
     }
 
 
