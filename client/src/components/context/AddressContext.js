@@ -216,11 +216,10 @@ const AppWrapper = (props) => {
     // getAllEvents ends here
 
     /**Adds a new Event in the events array */
-    const createNewEvent = async (name, uri, date, description) => {
-
+    const createNewEvent = async (indexId, name, uri, date, description) => {
+        let superfluidIndex = +indexId;
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); 
-
+        const newEvent = await account.contract.createEvent(superfluidIndex, description, uri,'', date, 0, false); 
         await newEvent.wait();
 
         navigate('/');

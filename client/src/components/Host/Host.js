@@ -13,7 +13,7 @@ const Host = () => {
     timeFormat: '',
     thumbnail: '',
   })
-  const [indexValue, setIndexValue] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const ctx = useContext(AppContext) //initialize ctx
 
@@ -64,13 +64,10 @@ const Host = () => {
     }
   }
 
-  const updateIndexHandler = async () => {
-     const indexId =  await ctx.sharedState.createIndex();
-      setIndexValue(indexId);
-  }
-  const formSubmitHandler = (event) => {
+
+  const formSubmitHandler = async (event) => {
     event.preventDefault()
-    // console.log(formInput);
+    setIsSubmitting(true);
 
     let time = formInput.time
 
@@ -88,25 +85,20 @@ const Host = () => {
     let imageId = formInput.thumbnail.split('/')[5]
     let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
 
-    ctx.sharedState.createNewEvent(
+    const indexId =  await ctx.sharedState.createIndex();
+
+    await ctx.sharedState.createNewEvent(
+      indexId,
       formInput.name,
       imageUrl,
       someDate,
       formInput.description
     )
+    setIsSubmitting(false);
   }
 
   return (
     <div>
-    <input 
-    type = 'text' 
-    label = 'Index Id' 
-    placeholder = 'Your Index will show here' 
-    value = {indexValue}
-    className = 'input input-bordered w-full max-w-xs'
-    disabled
-    />
-    <Button classes = 'btn-outline btn-success' onClick = {updateIndexHandler}>Click to create Index</Button>
       <form className='Form1' onSubmit={formSubmitHandler}>
         <Input
           type='text'
@@ -151,7 +143,7 @@ const Host = () => {
           placeholder='Thumbnail of the event (Google Drive link)'
           inputChange={inputHandler}
         />
-        <Button classes='btn-primary btn-wide'>Submit Event</Button>
+        <Button classes={`btn-primary btn-wide ${isSubmitting ? 'loading' : ''}`}>{isSubmitting ? "Submitting..." : "Submit Event"}</Button>
       </form>
     </div>
   )
