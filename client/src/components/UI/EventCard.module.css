@@ -1,28 +1,46 @@
 .card{
-    width:20rem;
-    height:19rem;
-    border-radius: 20px;
-    border: 1px solid rgb(128, 8, 8);
-    margin: 3% 10%;
+  position: relative;
+  display: block;
+  height: 23rem;  
+  border-radius:10%;
+  overflow: hidden;
+  text-decoration: none;
+  width: 77%;
+  margin:3% auto;
+}
+
+.cardOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: 200px;      
+    border-radius: 40px 0 0 0;    
+    background-color: #f5f4f3;
+    padding-top: 1em;
+    padding-left: 15%;
+  }
+
+.cardHeader {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: calc(var(--curve) * 1px) 0 0 0;    
+    background-color: var(--surface-color);
 }
 
 .card img {
-    height: 50%;
+    height: 77%;
     width: 100%;
 }
 
 .card h1 {
     text-align: center;
-    font-size: 1.6rem;
-    margin: 3% 0;
+    font-size: 1.75rem;
+    padding-left: 2%;
 }
 
-.card h2 {
-    text-align: center;
-    font-size: 1.1rem;
-    margin: 1% 0;
-}
-
-.btn{
-    margin: 2% 32%;
+.numJoined {
+    padding-left: 2%;
 }
