@@ -4,10 +4,13 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import { Button, Form, FormGroup, FormControl, Spinner } from "react-bootstrap";
 import "./createFlow.css";
 import { ethers } from "ethers";
-import { useContext } from "react";
 import { AppContext } from "../context/AddressContext";
-const { ethereum } = window;
-////////////////////////////////////////////////
+import { useContext } from "react";
+
+// signer
+
+// import Web3Modal from "web3modal";
+import { Web3Provider } from "@ethersproject/providers";
 
 //where the Superfluid logic takes place
 async function createNewFlow(recipient, flowRate) {
@@ -16,8 +19,12 @@ async function createNewFlow(recipient, flowRate) {
     provider: customHttpProvider,
   });
 
-  const signer = sf.createSigner(customHttpProvider.getSigner());
-  //  const signer = customHttpProvider.getSigner();
+  const signer = () => {
+    const metamaskProvider = new Web3Provider(window.ethereum);
+    const metaMaskSigner = sf.createSigner({ web3Provider: metamaskProvider });
+    return metaMaskSigner;
+  };
+
   const DAIxContract = await sf.loadSuperToken("fDAIx");
   const DAIx = DAIxContract.address;
 
@@ -31,18 +38,18 @@ async function createNewFlow(recipient, flowRate) {
 
     console.log("Creating your stream...");
 
-    const result = await createFlowOperation.exec(signer);
+    const result = await createFlowOperation.exec(signer());
     console.log(result);
 
     console.log(
       `Congrats - you've just created a money stream!
-    View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
-    Network: Goerli
-    Super Token: DAIx
-    Sender: 0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721
-    Receiver: ${recipient},
-    FlowRate: ${flowRate}
-    `
+      View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
+      Network: Goerli
+      Super Token: DAIx
+     
+      Receiver: ${recipient},
+      FlowRate: ${flowRate}
+      `
     );
   } catch (error) {
     console.log(
@@ -53,8 +60,6 @@ async function createNewFlow(recipient, flowRate) {
 }
 
 export const CreateFlow = () => {
-  const ctx = useContext(AppContext);
-  const address = ctx.sharedState.address;
   const [recipient, setRecipient] = useState("");
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [flowRate, setFlowRate] = useState("");
