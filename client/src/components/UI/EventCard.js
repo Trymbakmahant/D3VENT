@@ -1,14 +1,16 @@
 import classes from './EventCard.module.css';
 
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../context/AddressContext';
 
 import Button from "./Button";
 
 const EventCard = (props) => {
+    const ctx = useContext(AppContext);
     const navigate = useNavigate();
 
-    const singleEventHandler = () => {
-        console.log(props.type);
+    const singleEventHandler = async () => {
 
         if(props.type === 'organiser'){
             navigate(`/hosted-events/${props.id}`);
@@ -16,15 +18,34 @@ const EventCard = (props) => {
         }else if(props.type === 'participant'){
 
             navigate(`/participated-events/${props.id}`);
+        }else{
+            const singleEvent = await ctx.sharedState.getSingleEvent(props.id);
+            if(singleEvent.organiser === ctx.sharedState.accountAddress){
+                navigate(`/hosted-events/${props.id}`);
+            }else{
+                navigate(`/participated-events/${props.id}`);
+            }
         }
     };
-    
-    // 12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq
+
+    // return <div className= {classes.card}>
+    //     <h1>{props.name}</h1>
+    //     <img src = {props.thumbnail}/>
+    //     <h2>{props.numJoined} People Joined</h2>
+    //    
+    // </div>
+
     return <div className= {classes.card}>
-        <h1>{props.name}</h1>
-        <img src = 'https://drive.google.com/uc?export=view&id=12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq'/>
-        <h2>{props.numJoined}/{props.capacity} People Joined</h2>
-        <Button classes = {`${classes.btn}`} onClick = {singleEventHandler}>Know More</Button>
+        <img src = {props.thumbnail} />
+    <div className= {`${classes.cardOverlay}`}>
+        <div>
+            <h1 className= {classes.cardHeader}>{props.name}</h1>
+            <h2 className= {classes.numJoined}>{props.numJoined} People Joined</h2>
+        </div>
+        <div className= {classes.btn}>
+            <Button onClick = {singleEventHandler}>Know More</Button>
+        </div>
+    </div>
     </div>
 }
 

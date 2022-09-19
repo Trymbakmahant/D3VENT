@@ -25,7 +25,7 @@ const WroldCoinUse = () => {
     <div style={{ margin: "2%" }}>
       {" "}
       <WorldIDWidget
-        actionId="wid_9757aa98f27411999dff8622189a6ed9" // obtain this from developer.worldcoin.org
+        actionId="wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7" // obtain this from developer.worldcoin.org
         signal={ctx.sharedState.accountAddress}
         enableTelemetry
         onSuccess={(obj) => verifywithcloud(obj)} // you'll actually want to pass the proof to the API or your smart contract

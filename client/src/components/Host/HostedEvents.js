@@ -1,6 +1,6 @@
 import EventCard from "../UI/EventCard";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AddressContext";
 
 const DUMMY_HOSTED = [
@@ -52,18 +52,50 @@ const DUMMY_HOSTED = [
 ];
 
 const HostedEvents = () => {
+  const [hostedEvents, setHostedEvents] = useState([]);
   const ctx = useContext(AppContext);
+  let hostedEventsArray = [];
 
-  ctx.sharedState.getOrganisedEvents();
+  
+      useEffect(() => {
+        const getEvents = async () => {
+    
+          const organisedEventIds = await ctx.sharedState.getOrganisedEvents();
+    
+          const allEvents = ctx.sharedState.allEvents;
+          
+          
+          for(let i =0; i<organisedEventIds.length; i++){
+            for(let j =0; j<allEvents.length; j++){
+              if(organisedEventIds[i] === Number(allEvents[j].id)){
+                hostedEventsArray.push(allEvents[j]);
+                break;
+              }
+            }
+
+          }
+        }
+
+        getEvents().then(() => { 
+          setHostedEvents(hostedEventsArray)
+        }
+        )
+        }, []); 
+    
+  
+        
 
   return (
-    <div className="grid grid-cols-3">
-      {DUMMY_HOSTED.map((event) => (
-        <EventCard key={event.eventId} id = {event.eventId} name={event.name} price={event.price} capacity = {event.capacity} 
-        numJoined = {event.numJoined} date = {event.date} time = {event.time} type = "organiser"/>
+    <div>
+     {hostedEvents.length > 0  && <div className="grid grid-cols-3">
+    {hostedEvents.map((event) => (
+      <EventCard key={Number(event.id)} id = {Number(event.id)} name={event.name}
+      numJoined = {Number(event.numJoined)} date = {Number(event.dateTime)} thumbnail = {event.uri} type = "organiser"/>
       ))}
-    </div>
-  );
+      </div>}
+      </div>
+      )
+  ;
 };
 
 export default HostedEvents;

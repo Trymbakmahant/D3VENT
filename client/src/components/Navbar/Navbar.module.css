@@ -3,6 +3,7 @@
     justify-content: space-between;
     margin: 2% 3%;
     flex-wrap: wrap;
+    margin-top: 15px;
 }
 
 
@@ -10,7 +11,26 @@
     font-size: 1.5rem;
     padding-top: 4px;
 }
-
+.title {
+        display: flex;
+          
+            align-items: center;
+}
+.logo {
+    width: 40px;
+        height: auto;
+        /* aspect-ratio: 1 / 1; */
+        /* margin-right: 10px; */
+}
+.logoc{
+        cursor: pointer;
+            color:hsl(var(--s));
+            font-weight: 600;
+            font-size: 1.7rem;
+            display: block;
+            margin-top: 6%;
+            font-family: Inter, sans-serif;
+}
 .options {
     margin-left: 10%;
     display: flex;
@@ -18,10 +38,10 @@
 }
 
 .options h3 {
-    font-size: 1.18rem;
-    width: 115px;
+    font-size: 1.25rem;
+    width: 5.8em;
     text-align: center;
-    padding-top: 5px;
+    padding-top: 10px;
 }
 
 .connectBtn{

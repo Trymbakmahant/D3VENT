@@ -18,6 +18,25 @@ code {
   margin-left: 40%;
 }
 .btn{
-  margin-left: 90px;
+  margin-left: 75px;
+  margin-left: 30px;
   margin-top:25px;
+}
+
+.btn-error{
+  margin-left: 100px;
+}
+
+
+.divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: stretch;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: 1rem;
+  white-space: nowrap;
+  margin-left: 30px;
+  margin-bottom: -8px;
 }

@@ -94,6 +94,25 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "playbackUri",
+        "type": "string"
+      }
+    ],
+    "name": "EventPlaybackUriUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "bool",
         "name": "isJoinable",
         "type": "bool"
@@ -160,23 +179,17 @@
     "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
+    "inputs": [],
+    "name": "actionId",
+    "outputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "changedBy",
-        "type": "address"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
-    "name": "WorldcoinAddressChanged",
-    "type": "event"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -192,6 +205,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "adminsCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "string",
@@ -200,7 +226,17 @@
       },
       {
         "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "_uri",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_playbackUri",
         "type": "string"
       },
       {
@@ -210,13 +246,8 @@
       },
       {
         "internalType": "uint256",
-        "name": "_price",
+        "name": "_duration",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint128",
-        "name": "_capacity",
-        "type": "uint128"
       },
       {
         "internalType": "bool",
@@ -262,22 +293,24 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "eventIds",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "_id",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "getEvent",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllEvents",
     "outputs": [
       {
         "components": [
-          {
-            "internalType": "address",
-            "name": "organiser",
-            "type": "address"
-          },
           {
             "internalType": "uint256",
             "name": "id",
@@ -290,7 +323,22 @@
           },
           {
             "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "organiser",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
             "name": "uri",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "playbackUri",
             "type": "string"
           },
           {
@@ -300,13 +348,84 @@
           },
           {
             "internalType": "uint256",
-            "name": "price",
+            "name": "duration",
             "type": "uint256"
           },
           {
             "internalType": "uint128",
-            "name": "capacity",
+            "name": "numJoined",
             "type": "uint128"
+          },
+          {
+            "internalType": "bool",
+            "name": "isJoinable",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withdrawalDate",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct d3vent.event_[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getEvent",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "address",
+            "name": "organiser",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "playbackUri",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "dateTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "duration",
+            "type": "uint256"
           },
           {
             "internalType": "uint128",
@@ -371,6 +490,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "groupId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -379,6 +511,25 @@
       }
     ],
     "name": "isAdmin",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "isEventJoined",
     "outputs": [
       {
         "internalType": "bool",
@@ -516,6 +667,19 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_actionId",
+        "type": "string"
+      }
+    ],
+    "name": "setActionId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
@@ -539,12 +703,12 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "_newOrganiser",
-        "type": "address"
+        "internalType": "string",
+        "name": "_playbackUri",
+        "type": "string"
       }
     ],
-    "name": "setOrganiser",
+    "name": "setEventPlaybackUri",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -552,12 +716,30 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_groupId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGroupId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
-        "name": "_addr",
+        "name": "_newOrganiser",
         "type": "address"
       }
     ],
-    "name": "setWorldcoinAddress",
+    "name": "setOrganiser",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -616,12 +798,12 @@
   },
   {
     "inputs": [],
-    "name": "worldcoin",
+    "name": "withdrawalBuffer",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
