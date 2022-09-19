@@ -28,12 +28,24 @@ const EventCard = (props) => {
         }
     };
 
-    // 12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq
+    // return <div className= {classes.card}>
+    //     <h1>{props.name}</h1>
+    //     <img src = {props.thumbnail}/>
+    //     <h2>{props.numJoined} People Joined</h2>
+    //    
+    // </div>
+
     return <div className= {classes.card}>
-        <h1>{props.name}</h1>
-        <img src = {props.thumbnail}/>
-        <h2>{props.numJoined} People Joined</h2>
-        <Button classes = {`${classes.btn}`} onClick = {singleEventHandler}>Know More</Button>
+        <img src = {props.thumbnail} />
+    <div className= {`${classes.cardOverlay}`}>
+        <div>
+            <h1 className= {classes.cardHeader}>{props.name}</h1>
+            <h2 className= {classes.numJoined}>{props.numJoined} People Joined</h2>
+        </div>
+        <div className= {classes.btn}>
+            <Button onClick = {singleEventHandler}>Know More</Button>
+        </div>
+    </div>
     </div>
 }
 

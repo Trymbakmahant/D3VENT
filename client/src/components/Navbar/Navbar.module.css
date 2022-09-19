@@ -24,10 +24,11 @@
 }
 .logoc{
         cursor: pointer;
-            color: rgb(189, 231, 255);
+            color:hsl(var(--s));
             font-weight: 600;
-            font-size: 20.8px;
+            font-size: 1.7rem;
             display: block;
+            margin-top: 6%;
             font-family: Inter, sans-serif;
 }
 .options {
@@ -37,10 +38,10 @@
 }
 
 .options h3 {
-    font-size: 1.18rem;
-    width: 115px;
+    font-size: 1.25rem;
+    width: 5.8em;
     text-align: center;
-    padding-top: 5px;
+    padding-top: 10px;
 }
 
 .connectBtn{

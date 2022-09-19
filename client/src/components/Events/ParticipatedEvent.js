@@ -32,7 +32,6 @@ const ParticipatedEvent = () => {
     }
 
     const joinLiveHandler = async () => {
-
       const singleEvent  = await ctx.sharedState.getSingleEvent(id);
        let eventDate = Number(singleEvent.dateTime);
 
@@ -45,7 +44,7 @@ const ParticipatedEvent = () => {
        currentDate = currentDate.toString();
        currentDate = currentDate.substr(0, 15);
 
-       
+      console.log(singleEvent.isJoinable);       
 
       if(singleEvent.isJoinable){
         if(eventDate === currentDate){

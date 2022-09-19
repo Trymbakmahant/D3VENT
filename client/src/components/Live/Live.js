@@ -19,7 +19,7 @@ const Live = (props) =>{
 
         let currentDate = new Date().toString();
         currentDate = currentDate.substr(0, 18);
-        
+        console.log(eventDate);
         if(currentDate === eventDate){
             ctx.sharedState.setEventIsJoinable(props.eventId, true);
 
@@ -35,7 +35,7 @@ const Live = (props) =>{
             })
             const data = await response.json();
                 
-            ctx.sharedState.canGoLive(data.streamKey, data.playbackId);
+            ctx.sharedState.canGoLive(data.streamKey, data.playbackId, props.eventId);
         }   else {
             setIsWrongDate(true);
         }
