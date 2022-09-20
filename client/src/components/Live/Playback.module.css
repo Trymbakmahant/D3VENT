@@ -1,0 +1,8 @@
+.screen {
+    margin-left: 3%;
+}
+
+.page {
+    display: flex;
+    justify-content: space-between;
+}

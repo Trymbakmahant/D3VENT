@@ -8,8 +8,10 @@ import { DeleteFlow } from "../superfluid/DeleteFlow";
 import { CreateIndex } from "../superfluid/IDA";
 import { DistributeFunds } from "../superfluid/distribution";
 import EventSlides from "./EventSlides";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const ctx = useContext(AppContext);
 
   let allEvents = ctx.sharedState.allEvents;
@@ -22,6 +24,7 @@ const Home = () => {
 
   return (
     <div>
+    <button onClick = {() => {navigate('/events/cc73p82f6f19or2s')}}>Click</button>
     { ctx.sharedState.allEvents ?
       <div>
         <WORLDIDwidget />
