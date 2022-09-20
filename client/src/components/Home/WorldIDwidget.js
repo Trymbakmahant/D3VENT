@@ -7,7 +7,7 @@ const WroldCoinUse = () => {
     <div style={{ margin: "2%" }}>
       {" "}
       <WorldIDWidget
-        actionId="wid_BPZsRJANxct2cZxVRyh80SFG" // obtain this from developer.worldcoin.org
+        actionId="wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7" // obtain this from developer.worldcoin.org
         signal={ctx.sharedState.accountAddress}
         enableTelemetry
         onSuccess={(obj) => {

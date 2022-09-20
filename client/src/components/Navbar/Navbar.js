@@ -18,15 +18,14 @@ const Navbar = () => {
   }
 
   const activeStyle = {
-    borderBottom: '2px solid white',
-    color: 'white',
+    color: 'hsl(var(--sf))',
   }
 
   return (
     <div className={classes.navbar}>
       <div className={classes.title}>
-        <img className={classes.logo} src='logod3.png' />
-        <div className={classes.logoc}>EVENT</div>
+        {/*<img className={classes.logo} src='logod3.png' />*/}
+        <div className={classes.logoc}>D3VENT</div>
       </div>
       <div className={classes.options}>
         <NavLink
@@ -51,7 +50,7 @@ const Navbar = () => {
           to='/about'
           style={({ isActive }) => (isActive ? activeStyle : undefined)}
         >
-          <h3>About</h3>
+          <h3 style = {{width: "70px"}}>About</h3>
         </NavLink>
       </div>
       <div>

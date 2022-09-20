@@ -128,7 +128,7 @@ const AppWrapper = (props) => {
     // This function will get all the events ever registered
     const getAllEvents = async (contract) => {
       
-        const  allEvents = await contract.getAllEvents();
+        const allEvents = await contract.getAllEvents();
         setAllEvents(allEvents);
 
     }
@@ -141,6 +141,11 @@ const AppWrapper = (props) => {
         const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); 
 
         await newEvent.wait();
+
+        navigate('/');
+
+        getAllEvents(account.contract);
+
     }
     /**createNewEvent ends here */
 
@@ -189,7 +194,11 @@ const AppWrapper = (props) => {
 
     }
 
-    const canGoLive = (streamKey, playbackId) => {
+    const canGoLive = async (streamKey, playbackId, eventId) => {
+        const id = +eventId;
+        const tx = await account.contract.setEventPlaybackUri(id, playbackId);
+        await tx.wait();
+        
         setStreamKey((prevState) => {
             return {
                 currentKey: streamKey,

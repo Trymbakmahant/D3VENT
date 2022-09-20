@@ -19,19 +19,23 @@ const Live = (props) =>{
 
         let currentDate = new Date().toString();
         currentDate = currentDate.substr(0, 18);
-        
+        console.log(eventDate);
         if(currentDate === eventDate){
             ctx.sharedState.setEventIsJoinable(props.eventId, true);
 
-            const response = await fetch('https://livepeer.studio/api/stream/bf15205b-ed1f-4911-91ee-5b6447ae3ccb', {
-                method: 'GET',
+            const response = await fetch('https://livepeer.studio/api/stream', {
+                method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer 300b138b-5f81-4e7f-9426-fa5b898d4374'
-                }
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.REACT_APP_LIVEPEER_API_KEY}`
+                },
+                body:JSON.stringify({
+                    "name": `${event.name}${Number(event.id)}`
+                })
             })
             const data = await response.json();
                 
-            ctx.sharedState.canGoLive(data.streamKey, data.playbackId);
+            ctx.sharedState.canGoLive(data.streamKey, data.playbackId, props.eventId);
         }   else {
             setIsWrongDate(true);
         }

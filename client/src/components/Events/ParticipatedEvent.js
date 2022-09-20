@@ -32,12 +32,26 @@ const ParticipatedEvent = () => {
     }
 
     const joinLiveHandler = async () => {
-
       const singleEvent  = await ctx.sharedState.getSingleEvent(id);
+       let eventDate = Number(singleEvent.dateTime);
+
+       eventDate = new Date(eventDate);
+
+       eventDate = eventDate.toString();
+       eventDate = eventDate.substr(0, 15);
+
+       let currentDate = new Date();
+       currentDate = currentDate.toString();
+       currentDate = currentDate.substr(0, 15);
+
+      console.log(singleEvent.isJoinable);       
+
       if(singleEvent.isJoinable){
-        if((singleEvent.playbackUri.length)>0){
-          navigate(`/events/${singleEvent.playbackUri}`);
-      }
+        if(eventDate === currentDate){
+          if((singleEvent.playbackUri.length)>0){
+            navigate(`/events/${singleEvent.playbackUri}`);
+          }
+        }
       }else{
         setIsEventStarted(false);
       }
