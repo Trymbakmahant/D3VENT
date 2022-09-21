@@ -267,7 +267,7 @@ contract d3vent {
 
 
     /// @dev allow a contract admin to set isVerified true for an address
-    function setIsVerified(address _userAddr, bool _verified) external {
+    function setIsVerified(address _userAddr, bool _verified) external onlyAdmins {
         isVerified[_userAddr] = _verified;
         if(_verified) emit UserVerified(_userAddr);
     }
