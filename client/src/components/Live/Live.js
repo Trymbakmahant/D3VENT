@@ -20,7 +20,7 @@ const Live = (props) =>{
         let currentDate = new Date().toString();
         currentDate = currentDate.substr(0, 18);
         console.log(eventDate);
-        if(currentDate !== eventDate){
+        if(currentDate === eventDate){
             ctx.sharedState.setEventIsJoinable(props.eventId, true);
 
             const response = await fetch('https://livepeer.studio/api/stream', {

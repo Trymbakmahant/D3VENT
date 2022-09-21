@@ -19,14 +19,11 @@ function App() {
 
   return (
     <>
-      {  checkIsVerified ?
         <div>
           <Navbar />
           <Paths />
         </div>
-        :
-        <WORLDIDwidget />
-      }
+
     </>
   )
 }

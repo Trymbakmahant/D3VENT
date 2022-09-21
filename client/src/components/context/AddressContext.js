@@ -73,7 +73,7 @@ const AppWrapper = (props) => {
         contract: contract,
       };
     });
-      await checkIsVerified();
+      // await checkIsVerified();
       getAllEvents(contract);
   };
   /**connectWalletHandler() ends here */
@@ -221,7 +221,7 @@ const AppWrapper = (props) => {
     const createNewEvent = async (indexId, name, uri, date, description) => {
         let superfluidIndex = +indexId;
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(superfluidIndex, description, uri,'', date, 0, false); 
+        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false, superfluidIndex); 
         await newEvent.wait();
 
         navigate('/');
