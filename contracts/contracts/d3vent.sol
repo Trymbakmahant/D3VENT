@@ -266,7 +266,13 @@ contract d3vent {
     }
 
 
-    //@dev event organiser can withdraw event balance
+    /// @dev allow a contract admin to set isVerified true for an address
+    function setIsVerified(address _userAddr, bool _verified) external {
+        isVerified[_userAddr] = _verified;
+        if(_verified) emit UserVerified(_userAddr);
+    }
+
+    /// @dev event organiser can withdraw event balance
     function organiserWithdrawal(uint _id) external onlyOrganiser(_id) {
         require(block.timestamp >= events[_id].withdrawalDate + withdrawalBuffer, "withdrawal not allowed yet");
         
