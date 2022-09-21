@@ -249,6 +249,11 @@
         "type": "string"
       },
       {
+        "internalType": "uint256",
+        "name": "_sfIndexId",
+        "type": "uint256"
+      },
+      {
         "internalType": "string",
         "name": "_uri",
         "type": "string"

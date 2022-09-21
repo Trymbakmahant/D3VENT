@@ -37,17 +37,17 @@ const main = async () => {
   networkName = NETWORKS_LOOKUP.get(networkId)
   console.log("Network: %s %s", networkId, networkName )
   
-  
+
   //create events
   try {
     console.log("create events")
 
-    // event name, event uri, playbackUri, dateTime, duration, isJoinable
-    await d3ventContract.createEvent("inaugural event", "something for everyone", "https://drive.google.com/uc?export=view&id=1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj", "https://livepeer.org/123", 1662994265000, 1800000, true)
-    await d3ventContract.createEvent("second event", "not safe for work", "https://drive.google.com/uc?export=view&id=1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx", "https://livepeer.org/456",    1673994265000, 3600000, true)
-    await d3ventContract.createEvent("thrid event", "meet the geeks", "https://drive.google.com/uc?export=view&id=1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj", "https://livepeer.org/789",     1683994265000, 5400000, true)
-    await d3ventContract.createEvent("fourth event", "mumbai networking", "https://drive.google.com/uc?export=view&id=1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx", "https://livepeer.org/101112", 1686994265000, 7200000, true)
-    await d3ventContract.createEvent("fifth event", "premier of latest movie", "https://drive.google.com/uc?export=view&id=1DfNtVTT51M5FWwArvf3Bpme4M3Qadzku", "https://livepeer.org/131415",  1685994265000, 9000000, true)
+    // event name, event description, sfIndexId, event uri, playbackUri, dateTime, duration, isJoinable
+    await d3ventContract.createEvent("inaugural event", "something for everyone", 11110, "https://drive.google.com/uc?export=view&id=1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj", "https://livepeer.org/123", 1662994265000, 1800000, true)
+    await d3ventContract.createEvent("second event", "not safe for work", 11111, "https://drive.google.com/uc?export=view&id=1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx", "https://livepeer.org/456",    1673994265000, 3600000, true)
+    await d3ventContract.createEvent("thrid event", "meet the geeks", 11112, "https://drive.google.com/uc?export=view&id=1O2PruQVDFw3O8HZOqbZfgZaZdt67Lzpj", "https://livepeer.org/789",     1683994265000, 5400000, true)
+    await d3ventContract.createEvent("fourth event", "mumbai networking", 11113, "https://drive.google.com/uc?export=view&id=1N_iZ7G_Zlv85ZEwpPPt_Jd50sKm21Iyx", "https://livepeer.org/101112", 1686994265000, 7200000, true)
+    await d3ventContract.createEvent("fifth event", "premier of latest movie", 11114, "https://drive.google.com/uc?export=view&id=1DfNtVTT51M5FWwArvf3Bpme4M3Qadzku", "https://livepeer.org/131415",  1685994265000, 9000000, true)
 
 
 
