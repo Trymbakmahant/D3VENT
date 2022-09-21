@@ -155,12 +155,15 @@ contract d3vent {
         return isJoined[_id][msg.sender];
     }
 
+
     /// @dev create a new event. msg.sender is organiser
+    /// @dev _playbackUri changed from calldata to memory to get around stack too deep error on compile
     function createEvent(
         string calldata _name,
         string calldata _description,
+        uint _sfIndexId,
         string calldata _uri,
-        string calldata _playbackUri,
+        string memory _playbackUri,
         uint _dateTime,
         uint _duration,
         bool _isJoinable
@@ -168,17 +171,19 @@ contract d3vent {
         require(_dateTime > block.timestamp, "date/time in past");
 
         event_ memory newEvent;
-        
+
         newEvent.organiser = msg.sender;
         newEvent.id = eventIds++;
         newEvent.name = _name;
+        newEvent.description = _description;
         newEvent.uri = _uri;
+
         newEvent.playbackUri = _playbackUri;
         newEvent.dateTime = _dateTime;
         newEvent.duration = _duration;
         newEvent.isJoinable = _isJoinable;
-        newEvent.description = _description;
-
+        newEvent.sfIndexId = _sfIndexId;
+        
         organiserEventIds[msg.sender].push(newEvent.id);
 
         events.push(newEvent);
@@ -261,7 +266,13 @@ contract d3vent {
     }
 
 
-    //@dev event organiser can withdraw event balance
+    /// @dev allow a contract admin to set isVerified true for an address
+    function setIsVerified(address _userAddr, bool _verified) external {
+        isVerified[_userAddr] = _verified;
+        if(_verified) emit UserVerified(_userAddr);
+    }
+
+    /// @dev event organiser can withdraw event balance
     function organiserWithdrawal(uint _id) external onlyOrganiser(_id) {
         require(block.timestamp >= events[_id].withdrawalDate + withdrawalBuffer, "withdrawal not allowed yet");
         
