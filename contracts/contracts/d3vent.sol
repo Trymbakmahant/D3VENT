@@ -29,7 +29,7 @@ contract d3vent {
     uint256 public groupId = 1;
 
     /// @dev worldcoin action id used in verifyAndExecute
-    string public actionId = "wid_staging_034a32eef8f9c2d4ac2cca30890c2e76";
+    string public actionId = "wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7";
 
     
     
@@ -267,7 +267,8 @@ contract d3vent {
 
 
     /// @dev allow a contract admin to set isVerified true for an address
-    function setIsVerified(address _userAddr, bool _verified) external {
+    function setIsVerified(address _userAddr, bool _verified) external onlyAdmins {
+
         isVerified[_userAddr] = _verified;
         if(_verified) emit UserVerified(_userAddr);
     }
