@@ -113,6 +113,25 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "sfIndexId",
+        "type": "uint256"
+      }
+    ],
+    "name": "EventSuperfluidIndexIdUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "eventId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "bool",
         "name": "isJoinable",
         "type": "bool"
@@ -365,6 +384,11 @@
             "internalType": "uint256",
             "name": "withdrawalDate",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sfIndexId",
+            "type": "uint256"
           }
         ],
         "internalType": "struct d3vent.event_[]",
@@ -441,6 +465,11 @@
             "internalType": "uint256",
             "name": "withdrawalDate",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sfIndexId",
+            "type": "uint256"
           }
         ],
         "internalType": "struct d3vent.event_",
@@ -465,6 +494,25 @@
         "internalType": "uint256[]",
         "name": "",
         "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getSfIndexId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -593,7 +641,7 @@
     ],
     "name": "joinEvent",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -717,11 +765,16 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_groupId",
+        "name": "_id",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_newOrganiser",
+        "type": "address"
       }
     ],
-    "name": "setGroupId",
+    "name": "setOrganiser",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -734,12 +787,12 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "_newOrganiser",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_sfIndexId",
+        "type": "uint256"
       }
     ],
-    "name": "setOrganiser",
+    "name": "setSfIndexId",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
