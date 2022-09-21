@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { Framework } from "@superfluid-finance/sdk-core";
+import { customHttpProvider } from "../superfluid/config";
 
 import { useNavigate } from "react-router-dom";
 
@@ -44,10 +46,13 @@ const AppWrapper = (props) => {
     /** contract Address and contract ABI  */
   const contractAddress = addressOfContract;
   const ABI = contractABI;
+  const id = Math.floor(Math.random() * 1000000000);
+  const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
 
   useEffect(() => {
-    navigate('/');  
+    navigate('/'); 
     connectWalletHandler();
+    
   }, []);
 
   /** Function connectWalletHandler() sets the account Address */
@@ -68,6 +73,7 @@ const AppWrapper = (props) => {
         contract: contract,
       };
     });
+      // await checkIsVerified();
       getAllEvents(contract);
   };
   /**connectWalletHandler() ends here */
@@ -83,7 +89,7 @@ const AppWrapper = (props) => {
       ["uint256[8]"],
       proof
     )[0];
-    console.log("hello world coin");
+
     const root1 = ethers.BigNumber.from(root);
     const nullifier = ethers.BigNumber.from(nullifierHash);
     console.log(root1);
@@ -114,6 +120,83 @@ const AppWrapper = (props) => {
   const addOrganiser = async (eventId, newOrganiserAddress) => {};
   /**addOrganiser ends here */
 
+  //createIndex starts here
+  const createIndex = async () => {
+    
+    const sf = await Framework.create({
+      chainId: 5,
+      provider: customHttpProvider,
+    });
+    const signer = sf.createSigner({
+      privateKey:
+        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
+      provider: customHttpProvider,
+    });
+    try {
+      const createIndexOperation = sf.idaV1.createIndex({
+        indexId: id,
+        superToken: DAIx,
+        // userData?: string
+      });
+  
+      console.log("Creating your Index...");
+  
+      await createIndexOperation.exec(signer);
+  
+      console.log(
+        `Congrats - you've just created a new Index!
+         Network: Goerli
+         Super Token: DAIx
+         Index ID: ${id}
+      `
+      );
+    } catch (error) {
+      console.error(error);
+    }
+    return id;
+  };
+//createIndex ends here
+
+
+  //Starts here
+  const updateSubscription = async (id, address, shares) => {
+    const sf = await Framework.create({
+      chainId: 5,
+      provider: customHttpProvider,
+    });
+    const signer = sf.createSigner({
+      privateKey:
+        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
+      provider: customHttpProvider,
+    });
+    try {
+      const updateSubscriptionOperation = sf.idaV1.updateSubscriptionUnits({
+        indexId: id,
+        superToken: DAIx,
+        subscriber: address,
+        units: shares,
+        // userData?: string
+      });
+  
+      console.log("Updating your Index...");
+  
+      await updateSubscriptionOperation.exec(signer);
+  
+      console.log(
+        `Congrats - you've just updated an Index!
+           Network: Goerli
+           Super Token: DAIx
+           Index ID: ${id}
+           Subscriber: ${address}
+           Units: ${shares} units
+           
+        `
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //Update ends here
 
     /**Sets if an event is joinable or not */
     const setEventIsJoinable = async (eventId, isJoinable) =>{
@@ -135,11 +218,10 @@ const AppWrapper = (props) => {
     // getAllEvents ends here
 
     /**Adds a new Event in the events array */
-    const createNewEvent = async (name, uri, date, description) => {
-
+    const createNewEvent = async (indexId, name, uri, date, description) => {
+        let superfluidIndex = +indexId;
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false); 
-
+        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false, superfluidIndex); 
         await newEvent.wait();
 
         navigate('/');
@@ -149,8 +231,8 @@ const AppWrapper = (props) => {
     }
     /**createNewEvent ends here */
 
-    const isEventJoined = async (id) => {
-      const isJoined = await account.contract.isJoined(id, accountAddress);
+    const isEventJoined = async (eventIdNumber) => {
+      const isJoined = await account.contract.isJoined(eventIdNumber, accountAddress);
       console.log(isJoined);
       return isJoined;
     }
@@ -171,8 +253,8 @@ const AppWrapper = (props) => {
       return ids;
     }
 
-    const joinEvent = async (id) => {
-      const tx = await account.contract.joinEvent(id);
+    const joinEvent = async (eventIDNumber) => {
+      const tx = await account.contract.joinEvent(eventIDNumber);
 
       await tx.wait();
     }
@@ -192,6 +274,12 @@ const AppWrapper = (props) => {
     const getUserEvents = async () => {
         const userEvents = await account.contract.getUserEventIds(accountAddress);
 
+    }
+
+    const checkIsVerified = async () =>{
+      const isVerified = await account.contract.isVerified(accountAddress);
+      console.log(isVerified);
+      return isVerified;
     }
 
     const canGoLive = async (streamKey, playbackId, eventId) => {
@@ -226,7 +314,9 @@ const AppWrapper = (props) => {
         allEvents,
         isEventJoined,
         joinEvent,
-        getUserEventIds
+        getUserEventIds,
+        createIndex,
+        checkIsVerified
     };
 
     return (

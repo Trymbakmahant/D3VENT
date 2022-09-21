@@ -2,18 +2,27 @@ import { useContext } from "react";
 
 import { AppContext } from "../context/AddressContext";
 
-const Playback = () => {
-    const ctx = useContext(AppContext);
+import classes from "./Playback.module.css";
+import AdvertisementForm from "./AdvertisementForm";
 
-    return <iframe
-    src={`https://lvpr.tv?v=${ctx.sharedState.streamKey.playbackId}`}
-    frameborder="0"
-    width="80%"
-    height="500"
-    allowfullscreen
-    allow="autoplay; encrypted-media; picture-in-picture"
-    sandbox="allow-scripts">
-  </iframe>
+const Playback = () => {
+  const ctx = useContext(AppContext);
+
+  return (
+    <div className= {classes.page}>
+      <iframe
+        className={classes.screen}
+        src={`https://lvpr.tv?v=${ctx.sharedState.streamKey.playbackId}`}
+        frameborder="0"
+        width="75%"
+        height="450"
+        allowfullscreen
+        allow="autoplay; encrypted-media; picture-in-picture"
+        sandbox="allow-scripts"
+      ></iframe>
+      <AdvertisementForm />
+    </div>
+  );
 };
 
 export default Playback;
