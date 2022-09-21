@@ -37,6 +37,7 @@ const main = async () => {
   networkName = NETWORKS_LOOKUP.get(networkId)
   console.log("Network: %s %s", networkId, networkName )
   
+  
   //create events
   try {
     console.log("create events")
@@ -54,15 +55,28 @@ const main = async () => {
     console.log("createEvent: ", error)
   }
 
+
   // join events
   try {
     console.log("join events")
-    await d3ventContract.joinEvent(0, {value: ethers.utils.parseUnits("1000", 'wei').toHexString()})
-    await d3ventContract.joinEvent(1, {value: ethers.utils.parseUnits("2000", 'wei').toHexString()})
-    await d3ventContract.joinEvent(2, {value: ethers.utils.parseUnits("3000", 'wei').toHexString()})
+    await d3ventContract.joinEvent(0)
+    await d3ventContract.joinEvent(1)
+    await d3ventContract.joinEvent(2)
   } catch (error) {
     console.log("joinEvent: ", error)
   }
+
+
+  // set sfIndexIds
+  try {
+    console.log("set/get events' sfIndexIds")
+    await d3ventContract.setSfIndexId(0, 101010)
+    await d3ventContract.setSfIndexId(1, 12345)
+    await d3ventContract.setSfIndexId(2, 67890)
+  } catch (error) {
+    console.log("set sfIndexId: ", error)
+  }
+
 
   // can log data to console for debugging
   try {
@@ -76,6 +90,7 @@ const main = async () => {
   } catch (error) {
     console.log("get events and ids: ", error)
   }
+
 
   // if not Hardhat i.e. local do some pipeline actions
   if(networkId != "31337") {
