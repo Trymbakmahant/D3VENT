@@ -50,8 +50,9 @@ const AppWrapper = (props) => {
   const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
 
   useEffect(() => {
-    navigate('/');  
+    navigate('/'); 
     connectWalletHandler();
+    
   }, []);
 
   /** Function connectWalletHandler() sets the account Address */
@@ -72,6 +73,7 @@ const AppWrapper = (props) => {
         contract: contract,
       };
     });
+      await checkIsVerified();
       getAllEvents(contract);
   };
   /**connectWalletHandler() ends here */
@@ -274,6 +276,12 @@ const AppWrapper = (props) => {
 
     }
 
+    const checkIsVerified = async () =>{
+      const isVerified = await account.contract.isVerified(accountAddress);
+      console.log(isVerified);
+      return isVerified;
+    }
+
     const canGoLive = async (streamKey, playbackId, eventId) => {
         const id = +eventId;
         const tx = await account.contract.setEventPlaybackUri(id, playbackId);
@@ -282,7 +290,7 @@ const AppWrapper = (props) => {
         setStreamKey((prevState) => {
             return {
                 currentKey: streamKey,
-                ingestUrl: `srt://rtmp.livepeer.com:2935?${streamKey}`,
+                ingestUrl: `srt://rtmp.livepeer.com:2935?streamid=${streamKey}`,
                 playbackId: playbackId
             }
         })
@@ -307,7 +315,8 @@ const AppWrapper = (props) => {
         isEventJoined,
         joinEvent,
         getUserEventIds,
-        createIndex
+        createIndex,
+        checkIsVerified
     };
 
     return (

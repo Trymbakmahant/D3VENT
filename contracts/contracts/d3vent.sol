@@ -14,6 +14,7 @@ contract d3vent {
 
     event UserVerified(address indexed user);
     event EventPlaybackUriUpdated(uint indexed eventId, string playbackUri);
+    event EventSuperfluidIndexIdUpdated(uint indexed eventId, uint sfIndexId);
 
     using ByteHasher for bytes;
 
@@ -55,7 +56,7 @@ contract d3vent {
         uint128 numJoined;      
         bool isJoinable;
         uint withdrawalDate;
-        
+        uint sfIndexId;
     }
 
     event_[] events;
@@ -77,16 +78,13 @@ contract d3vent {
     }
 
 
+    /// @dev selfdestruct
     function kill() external onlyAdmins {
         selfdestruct(payable(msg.sender));
     }
 
 
-    /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
-    /// @param root The root of the Merkle tree (returned by the JS widget).
-    /// @param nullifierHash The nullifier hash for this proof, preventing double signaling (returned by the JS widget).
-    /// @param proof The zero-knowledge proof that demostrates the claimer is registered with World ID (returned by the JS widget).
-    /// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
+    /// @dev verify the proof and set the user's wallet address as a verified person if successful
     function verifyAndExecute(
         address signal,
         uint256 root,
@@ -115,19 +113,22 @@ contract d3vent {
         emit UserVerified(signal);
     }
 
-
+    
+    /// @dev enforce only an event's organiser allowed
     modifier onlyOrganiser (uint _id) {
         require(msg.sender == events[_id].organiser, "only organiser");
         _;
     }
 
 
+    /// @dev enforce only contract administrators allowed
     modifier onlyAdmins {
         require(isAdmin[msg.sender], "only admins");
         _;
     }
 
 
+    /// @dev add a contract administrator
     function addAdmin(address _newAdmin) external onlyAdmins {
         ++adminsCount;
         isAdmin[_newAdmin] = true;
@@ -135,25 +136,26 @@ contract d3vent {
     }
 
 
+    /// @dev delete a contract administrator. there must be at least one admin
     function deleteAdmin(address _newAdmin) external onlyAdmins {
         require(adminsCount > 1, "can't delete last admin");
         --adminsCount;
         isAdmin[_newAdmin] = false;
     }
 
-    function setGroupId(uint _groupId) external onlyAdmins {
-        groupId = _groupId;
-    }
-
+    
+    /// @dev to allow the worldcoin action id to be changed
     function setActionId(string calldata _actionId) external onlyAdmins {
         actionId = _actionId;
     }
     
+
+    /// @dev joined/joinable currently being used as an event isLive/watching flag
     function isEventJoined(uint _id) external view returns(bool) {
         return isJoined[_id][msg.sender];
     }
 
-
+    /// @dev create a new event. msg.sender is organiser
     function createEvent(
         string calldata _name,
         string calldata _description,
@@ -183,7 +185,7 @@ contract d3vent {
         emit CreatedEvent(newEvent.id, newEvent.dateTime, newEvent.name);
     }
 
-
+    /// @dev allow an event's organiser to be changed
     function setOrganiser(uint _id, address _newOrganiser) external onlyOrganiser(_id) {
         require(_newOrganiser != address(0), "invalid: zero address");
         require(_id <= eventIds, "invalid event id");
@@ -192,6 +194,7 @@ contract d3vent {
     }
 
 
+    /// @dev isJoinable being used as an event isLive flag
     function setEventIsJoinable(uint _id, bool _isJoinable) external onlyOrganiser(_id) {
         //require(! events[_id].isJoinable, "already joinable");    // used for differnt purpose now
         events[_id].isJoinable = _isJoinable;
@@ -199,51 +202,65 @@ contract d3vent {
     }
 
 
-    function joinEvent(uint _id) external payable {
+    /// @dev joined is being used as an isWatching flag
+    function joinEvent(uint _id) external {
         require(_id <= eventIds, "invalid event id");
-        //require(events[_id].isJoinable, "cant join at this time");    // used for differnt purpose now
-        //require(msg.value == events[_id].price, "send event price");   // used for differnt purpose now
         require(! isJoined[_id][msg.sender], "already joined");  // keep this check as it keeps a running total
 
         ++events[_id].numJoined;
         isJoined[_id][msg.sender] = true;
         userEventIds[msg.sender].push(_id);
-        eventBalances[_id] = msg.value;
+        //eventBalances[_id] = msg.value;   // ticket price no longer in use as using superfluid
     }
     
 
-    // @dev anyone can view all event details    
+    /// @dev anyone can view all event details    
     function getEvent(uint _id) external view returns (event_ memory) {
         require(_id <= eventIds, "invalid event id");
         return events[_id];
     }
 
-    // @dev returns the whole events array
+    /// @dev returns the whole events array
     function getAllEvents() external view returns (event_[] memory) {
         return events;
     }
 
 
-    // @dev returns array of created event ids for organiser address
+    /// @dev returns array of created event ids for organiser address
     function getOrganiserEventIds(address _organiser) external view returns(uint[] memory) {
         return organiserEventIds[_organiser];
     }
 
 
-    // @dev returns array of joined event ids for user address
+    /// @dev returns array of joined event ids for user address
     function getUserEventIds(address _user) external view returns(uint[] memory) {
         return userEventIds[_user];
     }
 
 
-    // @dev returns array of joined event ids for user address
+    /// @dev sets the playbackUri element of the event object
     function setEventPlaybackUri(uint _id, string calldata _playbackUri) external onlyOrganiser(_id) {
         require(_id < events.length, "invalid event id");
         events[_id].playbackUri = _playbackUri;
         emit EventPlaybackUriUpdated(_id, _playbackUri);
     }
 
-    
+
+    /// @dev gets the sfIndexId element of the event object
+    function getSfIndexId(uint _id) external view returns (uint) {
+        require(_id < events.length, "invalid event id");
+        return events[_id].sfIndexId;
+    }
+
+
+    /// @dev sets the sfIndexId element of the event object
+    function setSfIndexId(uint _id, uint _sfIndexId) external onlyOrganiser(_id) {
+        require(_id < events.length, "invalid event id");
+        events[_id].sfIndexId = _sfIndexId;
+        emit EventSuperfluidIndexIdUpdated(_id, _sfIndexId);
+    }
+
+
     //@dev event organiser can withdraw event balance
     function organiserWithdrawal(uint _id) external onlyOrganiser(_id) {
         require(block.timestamp >= events[_id].withdrawalDate + withdrawalBuffer, "withdrawal not allowed yet");
