@@ -202,7 +202,7 @@ const AppWrapper = (props) => {
         setStreamKey((prevState) => {
             return {
                 currentKey: streamKey,
-                ingestUrl: `srt://rtmp.livepeer.com:2935?${streamKey}`,
+                ingestUrl: `srt://rtmp.livepeer.com:2935?streamid=${streamKey}`,
                 playbackId: playbackId
             }
         })
