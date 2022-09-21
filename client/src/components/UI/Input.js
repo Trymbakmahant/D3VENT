@@ -23,6 +23,7 @@ const Input = (props) => {
         min={props.min ? props.min : ""}
         max={props.max ? props.max : ""}
         className="input input-bordered input-primary w-full max-w-xs"
+        required
       />
     </div>
   );
