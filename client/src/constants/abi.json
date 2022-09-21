@@ -769,6 +769,24 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_userAddr",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_verified",
+        "type": "bool"
+      }
+    ],
+    "name": "setIsVerified",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_id",
         "type": "uint256"
