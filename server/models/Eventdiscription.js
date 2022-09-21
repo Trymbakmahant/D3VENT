@@ -7,6 +7,7 @@ const eventDiscription = new mongoose.Schema({
   eventUrl: { type: String, required: true },
   AddvertiseLink: { type: String, required: true },
   AddvertiseName: { type: String, required: true },
+  CurrentNo: { type: String, required: true },
 });
 
 const EventDiscription = mongoose.model("EventDiscription", eventDiscription);

@@ -10,21 +10,25 @@ router.route("/").post(async (req, res) => {
       eventUrl,
       AddvertiseLink,
       AddvertiseName,
+      CurrentNo,
     } = req.body;
 
     const eventDiscription = new EventDiscription({
-      indexId: indexId,
-      Time: Time,
-      eventName: eventName,
-      eventUrl: eventUrl,
-      AddvertiseLink: AddvertiseLink,
-      AddvertiseName: AddvertiseName,
+      indexId,
+      Time,
+      eventName,
+      eventUrl,
+      AddvertiseLink,
+      AddvertiseName,
+      CurrentNo,
     });
 
     await eventDiscription.save();
-    console.log(eventDiscription);
+
+    res.send({ message: "sucsses" });
   } catch (err) {
-    cosnole.log(err);
+    console.log(err);
+    res.json("mission failed");
   }
 });
 
