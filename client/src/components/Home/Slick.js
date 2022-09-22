@@ -29,22 +29,19 @@ const Slick = () => {
       <h2>Welcome to D3VENT</h2>
       <Slider {...settings}>
       <div>
-      <img src={ctx.sharedState.allEvents[1].uri} />
+      <img src={ctx.sharedState.allEvents[4].uri} />
       </div>
           <div>
-            <img src={ctx.sharedState.allEvents[1].uri} />
+            <img src={ctx.sharedState.allEvents[0].uri} />
           </div>
           <div>
-            <img src={ctx.sharedState.allEvents[2].uri} />
+            <img src={ctx.sharedState.allEvents[1].uri} />
             </div>
           <div>
+            <img src={ctx.sharedState.allEvents[2].uri} />
+          </div>
+          <div>
             <img src={ctx.sharedState.allEvents[3].uri} />
-          </div>
-          <div>
-            <img src={ctx.sharedState.allEvents[4].uri} />
-          </div>
-          <div>
-          <img src={"./"} />
           </div>
           </Slider>
           </div>

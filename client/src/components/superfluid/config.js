@@ -3,5 +3,5 @@ export const ethers = require("ethers");
 
 // Ethers.js provider initialization
 export const url =
-  "https://eth-goerli.alchemyapi.io/v2/zfWv3pEito9Wi7gDUSLsand11To5VEjN";
+  "https://polygon-mumbai.g.alchemy.com/v2/KM1Kv-cqY7LlaPsoximQwOASxTzExuR5";
 export const customHttpProvider = new ethers.providers.JsonRpcProvider(url);

@@ -5,6 +5,11 @@ import Input from "../UI/Input";
 
 import classes from './AdvertisementForm.module.css';
 
+import { useContext } from "react";
+import { AppContext } from "../context/AddressContext";
+
+import { useParams } from "react-router-dom";
+
 const AdvertisementForm = () => {
     const [formInput, setFormInput] = useState({
         name: '',
@@ -12,7 +17,31 @@ const AdvertisementForm = () => {
         amount: ''
     });
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const ctx = useContext(AppContext);
 
+    const {id} = useParams();
+        const checkEvent = async () => {
+            const singleEvent = await ctx.sharedState.getSingleEvent(id);
+            
+            const myTimeout = setInterval(() => {
+            fetch('http://localhost:8081/api/checkAd/',  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+             eventName: singleEvent.name,
+            })
+        }).then(res => res.json())
+        .then(response => {
+            console.log(response);
+        })
+    }, 12000);
+
+        }
+
+        checkEvent();
+   
     const showOrHideFormHandler = () =>{
         setIsFormVisible(!isFormVisible);
     }
@@ -38,9 +67,24 @@ const AdvertisementForm = () => {
                 break;
         }
     }
-    const formSubmitHandler = (event) =>{
+    const formSubmitHandler = async (event) =>{
         event.preventDefault();
-        console.log('Data is: ', formInput.name, formInput.url, formInput.amount);
+        const singleEvent = await ctx.sharedState.getSingleEvent(id);
+       
+        await fetch('http://localhost:8081/api/event', {
+            method: 'POST',
+            body: JSON.stringify({
+                indexId: Number(singleEvent.sfIndexId),
+                eventName: singleEvent.name,
+                AddvertiseLink: formInput.url,
+                AddvertiseName: formInput.name,
+                time: formInput.amount*10
+            }),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        await ctx.sharedState.distribute(Number(singleEvent.sfIndexId), +formInput.amount);
     }
 
     return <div>

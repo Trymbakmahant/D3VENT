@@ -5,12 +5,12 @@ import { AppContext } from "../context/AddressContext";
 
 import Button from "../UI/Button";
 
-const ShowDetails = () => {
+const ShowDetails = (props) => {
     const ctx = useContext(AppContext);
     const navigate = useNavigate();
 
     const showPlaybackHandler = () => {
-        navigate(`/events/${ctx.sharedState.streamKey.playbackId}`);
+        navigate(`/events/${props.eventId}/${ctx.sharedState.streamKey.playbackId}`);
     }
 
     return (

@@ -19,10 +19,15 @@ function App() {
 
   return (
     <>
-        <div>
-          <Navbar />
-          <Paths />
-        </div>
+    {
+      checkIsVerified ?
+      <div>
+      <Navbar />
+      <Paths />
+      </div>
+      :
+      <WORLDIDwidget />
+    }
 
     </>
   )
