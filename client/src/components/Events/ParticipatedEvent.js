@@ -49,6 +49,8 @@ const ParticipatedEvent = () => {
       if(singleEvent.isJoinable){
         if(eventDate === currentDate){
           if((singleEvent.playbackUri.length)>0){
+            const singleEvent = await ctx.sharedState.getSingleEvent(id);
+            await ctx.sharedState.updateSubscription(Number(singleEvent.sfIndexId), ctx.sharedState.accountAddress, 500);
             navigate(`/events/${singleEvent.playbackUri}`);
           }
         }

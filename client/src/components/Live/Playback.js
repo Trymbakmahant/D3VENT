@@ -7,6 +7,7 @@ import AdvertisementForm from "./AdvertisementForm";
 
 const Playback = () => {
   const ctx = useContext(AppContext);
+  const flow = 0;
 
   return (
     <div className= {classes.page}>
@@ -20,7 +21,7 @@ const Playback = () => {
         allow="autoplay; encrypted-media; picture-in-picture"
         sandbox="allow-scripts"
       ></iframe>
-      <AdvertisementForm />
+      {flow ? "ad" : <AdvertisementForm />}
     </div>
   );
 };

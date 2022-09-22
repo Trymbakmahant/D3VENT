@@ -124,7 +124,7 @@ const AppWrapper = (props) => {
   const createIndex = async () => {
     
     const sf = await Framework.create({
-      chainId: 5,
+      chainId: 80001,
       provider: customHttpProvider,
     });
     const signer = sf.createSigner({
@@ -157,11 +157,50 @@ const AppWrapper = (props) => {
   };
 //createIndex ends here
 
+async function distribute(id, amount) {
+  const sf = await Framework.create({
+    chainId: 80001,
+    provider: customHttpProvider,
+  });
+
+  const signer = sf.createSigner({
+    privateKey:
+      "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
+    provider: customHttpProvider,
+  });
+
+  const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
+
+  try {
+    const distributeOperation = sf.idaV1.distribute({
+      indexId: id,
+      superToken: DAIx,
+      amount: amount,
+      // userData?: string
+    });
+
+    console.log("Distributing funds to your index subscribers...");
+
+    await distributeOperation.exec(signer);
+
+    console.log(
+      `Congrats - you've just sent funds to your index!
+       Network: Goerli
+       Super Token: DAIx
+       Index ID: ${id}
+       Total Sent: ${amount}
+    `
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
   //Starts here
   const updateSubscription = async (id, address, shares) => {
     const sf = await Framework.create({
-      chainId: 5,
+      chainId: 80001,
       provider: customHttpProvider,
     });
     const signer = sf.createSigner({
@@ -221,7 +260,7 @@ const AppWrapper = (props) => {
     const createNewEvent = async (indexId, name, uri, date, description) => {
         let superfluidIndex = +indexId;
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, description, uri,'', date, 0, false, superfluidIndex); 
+        const newEvent = await account.contract.createEvent(name, description, superfluidIndex, uri,'', date, 0, false); 
         await newEvent.wait();
 
         navigate('/');
@@ -316,7 +355,9 @@ const AppWrapper = (props) => {
         joinEvent,
         getUserEventIds,
         createIndex,
-        checkIsVerified
+        checkIsVerified,
+        updateSubscription,
+        distribute
     };
 
     return (

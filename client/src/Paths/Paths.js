@@ -21,7 +21,7 @@ const Paths = () => {
       <Route path='/live' element={<Live />} />
       <Route path='/hosted-events' element={<HostedEvents />} />
       <Route path='/hosted-events/:id' element={<HostedEvent />} />
-      <Route path='/events/:playbackId' element={<Playback />} />
+      <Route path='/events/:id/:playbackId' element={<Playback />} />
       <Route path='/participated-events' element={<ParticipatedEvents />} />
       <Route path='/participated-events/:id' element={<ParticipatedEvent />} />
     </Routes>

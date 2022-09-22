@@ -11,7 +11,7 @@ const HostedEvent = () => {
     <div>
     <EventDetails />
       <Live eventId = {id}/>
-      <ShowDetails />
+      <ShowDetails eventId = {id}/>
     </div>
   );
 };
