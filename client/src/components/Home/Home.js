@@ -19,7 +19,7 @@ const Home = () => {
 
   return (
     <div>
-    <button onClick = {() => {navigate('/events/1/cc73p82f6f19or2s')}}>Click</button>
+    <button onClick = {() => {navigate('/events/5/cc73p82f6f19or2s')}}>Click</button>
     { ctx.sharedState.allEvents ?
       <div>
         <Slick />

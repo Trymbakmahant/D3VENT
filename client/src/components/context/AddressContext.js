@@ -120,122 +120,97 @@ const AppWrapper = (props) => {
   const addOrganiser = async (eventId, newOrganiserAddress) => {};
   /**addOrganiser ends here */
 
-  //createIndex starts here
-  const createIndex = async () => {
-    
+ 
+  async function createNewFlow(recipient, flowRate) {
     const sf = await Framework.create({
-      chainId: 80001,
+      chainId: 5,
       provider: customHttpProvider,
     });
+  
+    // const signer = () => {
+    //   const metamaskProvider = new Web3Provider(window.ethereum);
+    //   const metaMaskSigner = sf.createSigner({ web3Provider: metamaskProvider });
+    //   return metaMaskSigner;
+    // };
     const signer = sf.createSigner({
       privateKey:
         "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
-      provider: customHttpProvider,
+      provider: customHttpProvider
     });
+
+    const DAIxContract = await sf.loadSuperToken("fDAIx");
+    const DAIx = DAIxContract.address;
+  
     try {
-      const createIndexOperation = sf.idaV1.createIndex({
-        indexId: id,
+      const createFlowOperation = sf.cfaV1.createFlow({
+        flowRate: flowRate,
+        receiver: recipient,
         superToken: DAIx,
         // userData?: string
       });
   
-      console.log("Creating your Index...");
+      console.log("Creating your stream...");
   
-      await createIndexOperation.exec(signer);
+      const result = await createFlowOperation.exec(signer);
+      console.log(result);
   
       console.log(
-        `Congrats - you've just created a new Index!
-         Network: Goerli
+        `Congrats - you've just created a money stream!
+        View Your Stream At: https://app.superfluid.finance/dashboard/${recipient}
+        Network: Goerli
+        Super Token: DAIx
+       
+        Receiver: ${recipient},
+        FlowRate: ${flowRate}
+        `
+      );
+    } catch (error) {
+      console.log(
+        "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
+      );
+      console.error(error);
+    }
+  }
+
+  async function deleteFlow(recipient) {
+    const sf = await Framework.create({
+      chainId: 5,
+      provider: customHttpProvider
+    });
+  
+    const signer = sf.createSigner({
+      privateKey:
+        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
+      provider: customHttpProvider
+    });
+  
+    const DAIxContract = await sf.loadSuperToken("fDAIx");
+    const DAIx = DAIxContract.address;
+  
+    try {
+      const deleteFlowOperation = sf.cfaV1.deleteFlow({
+        sender: "0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721",
+        receiver: recipient,
+        superToken: DAIx
+        // userData?: string
+      });
+  
+      console.log("Deleting your stream...");
+  
+      await deleteFlowOperation.exec(signer);
+  
+      console.log(
+        `Congrats - you've just deleted your money stream!
+         Network: Kovan
          Super Token: DAIx
-         Index ID: ${id}
+         Sender: 0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721
+         Receiver: ${recipient}
       `
       );
     } catch (error) {
       console.error(error);
     }
-    return id;
-  };
-//createIndex ends here
-
-async function distribute(id, amount) {
-  const sf = await Framework.create({
-    chainId: 80001,
-    provider: customHttpProvider,
-  });
-
-  const signer = sf.createSigner({
-    privateKey:
-      "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
-    provider: customHttpProvider,
-  });
-
-  const DAIx = "0xF2d68898557cCb2Cf4C10c3Ef2B034b2a69DAD00";
-
-  try {
-    const distributeOperation = sf.idaV1.distribute({
-      indexId: id,
-      superToken: DAIx,
-      amount: amount,
-      // userData?: string
-    });
-
-    console.log("Distributing funds to your index subscribers...");
-
-    await distributeOperation.exec(signer);
-
-    console.log(
-      `Congrats - you've just sent funds to your index!
-       Network: Goerli
-       Super Token: DAIx
-       Index ID: ${id}
-       Total Sent: ${amount}
-    `
-    );
-  } catch (error) {
-    console.error(error);
   }
-}
-
-
-  //Starts here
-  const updateSubscription = async (id, address, shares) => {
-    const sf = await Framework.create({
-      chainId: 80001,
-      provider: customHttpProvider,
-    });
-    const signer = sf.createSigner({
-      privateKey:
-        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
-      provider: customHttpProvider,
-    });
-    try {
-      const updateSubscriptionOperation = sf.idaV1.updateSubscriptionUnits({
-        indexId: id,
-        superToken: DAIx,
-        subscriber: address,
-        units: shares,
-        // userData?: string
-      });
-  
-      console.log("Updating your Index...");
-  
-      await updateSubscriptionOperation.exec(signer);
-  
-      console.log(
-        `Congrats - you've just updated an Index!
-           Network: Goerli
-           Super Token: DAIx
-           Index ID: ${id}
-           Subscriber: ${address}
-           Units: ${shares} units
-           
-        `
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  //Update ends here
 
     /**Sets if an event is joinable or not */
     const setEventIsJoinable = async (eventId, isJoinable) =>{
@@ -257,10 +232,10 @@ async function distribute(id, amount) {
     // getAllEvents ends here
 
     /**Adds a new Event in the events array */
-    const createNewEvent = async (indexId, name, uri, date, description) => {
-        let superfluidIndex = +indexId;
+    const createNewEvent = async (name, uri, date, description) => {
+        
         //That is how you need to call a function of smart contract @smoothy
-        const newEvent = await account.contract.createEvent(name, description, superfluidIndex, uri,'', date, 0, false); 
+        const newEvent = await account.contract.createEvent(name, description, id, uri,'', date, 0, false); 
         await newEvent.wait();
 
         navigate('/');
@@ -354,10 +329,9 @@ async function distribute(id, amount) {
         isEventJoined,
         joinEvent,
         getUserEventIds,
-        createIndex,
         checkIsVerified,
-        updateSubscription,
-        distribute
+        createNewFlow,
+        deleteFlow
     };
 
     return (
