@@ -10,19 +10,20 @@ import { AppContext } from "../context/AddressContext";
 
 import { useParams } from "react-router-dom";
 
-const AdvertisementForm = () => {
+const AdvertisementForm = (props) => {
     const [formInput, setFormInput] = useState({
         name: '',
         url: '',
         amount: ''
     });
     const [isFormVisible, setIsFormVisible] = useState(false);
+    
     const ctx = useContext(AppContext);
 
     const {id} = useParams();
         const checkEvent = async () => {
             const singleEvent = await ctx.sharedState.getSingleEvent(id);
-            
+            // console.log(singleEvent);
             const myTimeout = setInterval(() => {
             fetch('http://localhost:8081/api/checkAd/',  {
             method: 'POST',
@@ -34,9 +35,13 @@ const AdvertisementForm = () => {
             })
         }).then(res => res.json())
         .then(response => {
-            console.log(response);
+            if(response === "remaining"){
+               props.showAd(true);
+            }else{
+                props.showAd(false);
+            }
         })
-    }, 12000);
+    }, 5000);
 
         }
 
@@ -70,7 +75,6 @@ const AdvertisementForm = () => {
     const formSubmitHandler = async (event) =>{
         event.preventDefault();
         const singleEvent = await ctx.sharedState.getSingleEvent(id);
-       
         await fetch('http://localhost:8081/api/event', {
             method: 'POST',
             body: JSON.stringify({
@@ -83,8 +87,23 @@ const AdvertisementForm = () => {
             headers:{
                 'Content-Type': 'application/json'
             }
-        })
-        await ctx.sharedState.distribute(Number(singleEvent.sfIndexId), +formInput.amount);
+        }) 
+        const flowRate =  10000000000000;
+        await  ctx.sharedState.createNewFlow(singleEvent.organiser, flowRate)
+        const timeToStop = formInput.amount*10*1000;
+        const stopFlow = () => {
+
+            setTimeout(() => {
+                const stopIt = async() => {
+                    console.log(typeof(formInput.amount*10));
+                    await ctx.sharedState.deleteFlow(singleEvent.organiser);
+                }
+                stopIt();
+            }, timeToStop);
+        }
+        stopFlow();
+        
+
     }
 
     return <div>

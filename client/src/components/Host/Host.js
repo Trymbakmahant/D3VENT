@@ -85,11 +85,8 @@ const Host = () => {
     let imageId = formInput.thumbnail.split('/')[5]
     let imageUrl = `https://drive.google.com/uc?export=view&id=${imageId}`
 
-    const indexId =  await ctx.sharedState.createIndex();
-    await ctx.sharedState.updateSubscription(indexId, ctx.sharedState.accountAddress, 10000);
     
     await ctx.sharedState.createNewEvent(
-      indexId,
       formInput.name,
       imageUrl,
       someDate,
