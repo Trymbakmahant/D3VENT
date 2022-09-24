@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { Framework } from "@superfluid-finance/sdk-core";
-import { customHttpProvider } from "../superfluid/config";
+
 
 import { useNavigate } from "react-router-dom";
 
@@ -122,21 +122,15 @@ const AppWrapper = (props) => {
 
  
   async function createNewFlow(recipient, flowRate) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    const signer = provider.getSigner();
+
     const sf = await Framework.create({
-      chainId: 5,
-      provider: customHttpProvider,
+      chainId: 80001,
+      provider: provider,
     });
   
-    // const signer = () => {
-    //   const metamaskProvider = new Web3Provider(window.ethereum);
-    //   const metaMaskSigner = sf.createSigner({ web3Provider: metamaskProvider });
-    //   return metaMaskSigner;
-    // };
-    const signer = sf.createSigner({
-      privateKey:
-        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
-      provider: customHttpProvider
-    });
 
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
@@ -163,7 +157,7 @@ const AppWrapper = (props) => {
         Receiver: ${recipient},
         FlowRate: ${flowRate}
         `
-      );
+        );
     } catch (error) {
       console.log(
         "Hmmm, your transaction threw an error. Make sure that this stream does not already exist, and that you've entered a valid Ethereum address!"
@@ -173,23 +167,21 @@ const AppWrapper = (props) => {
   }
 
   async function deleteFlow(recipient) {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+    const signer = provider.getSigner();
     const sf = await Framework.create({
-      chainId: 5,
-      provider: customHttpProvider
+      chainId: 80001,
+      provider: provider
     });
   
-    const signer = sf.createSigner({
-      privateKey:
-        "0xd2ebfb1517ee73c4bd3d209530a7e1c25352542843077109ae77a2c0213375f1",
-      provider: customHttpProvider
-    });
   
     const DAIxContract = await sf.loadSuperToken("fDAIx");
     const DAIx = DAIxContract.address;
   
     try {
       const deleteFlowOperation = sf.cfaV1.deleteFlow({
-        sender: "0xDCB45e4f6762C3D7C61a00e96Fb94ADb7Cf27721",
+        sender: accountAddress,
         receiver: recipient,
         superToken: DAIx
         // userData?: string
@@ -292,7 +284,6 @@ const AppWrapper = (props) => {
 
     const checkIsVerified = async () =>{
       const isVerified = await account.contract.isVerified(accountAddress);
-      console.log(isVerified);
       return isVerified;
     }
 
@@ -331,7 +322,7 @@ const AppWrapper = (props) => {
         getUserEventIds,
         checkIsVerified,
         createNewFlow,
-        deleteFlow
+        deleteFlow,
     };
 
     return (

@@ -1,26 +1,37 @@
 .title{
     text-align: center;
     font-size: 2.5rem;
+    margin-bottom: 5%;
 }
 
 .knowmore{
     margin: 50px auto;
-    width: 75%;
+    width: 100%;
 }
 
 .knowmore img{
-    width: 100%;
-    height: 450px;
-    margin: 1% auto;
+    width: 80%;
+    height: 300px;
+    margin-top: 1%;
+    margin-left: 15%;
     border-radius: 20px;
 }
 
-.details{
-    margin-top: 2%;
-    display: flex;
-    justify-content: space-between;
+.description {
+    padding-left: 7%;
+    font-size: 1.2rem;
 }
 
+.details{
+    margin-top: 4%;
+    margin-left: 7%;
+    /* display: flex; */
+    /* justify-content: space-between; */
+}
+
+
+
 .details h2{
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    margin-bottom: 1%;
 }

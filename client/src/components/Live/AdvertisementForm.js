@@ -35,10 +35,12 @@ const AdvertisementForm = (props) => {
             })
         }).then(res => res.json())
         .then(response => {
-            if(response === "remaining"){
+            if(response !== "udaa de"){
                props.showAd(true);
+               props.imageUrl(response);
             }else{
                 props.showAd(false);
+                props.imageUrl("");
             }
         })
     }, 5000);
@@ -75,21 +77,27 @@ const AdvertisementForm = (props) => {
     const formSubmitHandler = async (event) =>{
         event.preventDefault();
         const singleEvent = await ctx.sharedState.getSingleEvent(id);
-        await fetch('http://localhost:8081/api/event', {
-            method: 'POST',
-            body: JSON.stringify({
-                indexId: Number(singleEvent.sfIndexId),
-                eventName: singleEvent.name,
-                AddvertiseLink: formInput.url,
-                AddvertiseName: formInput.name,
-                time: formInput.amount*10
-            }),
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        }) 
+
         const flowRate =  10000000000000;
         await  ctx.sharedState.createNewFlow(singleEvent.organiser, flowRate)
+
+        
+
+            await fetch('http://localhost:8081/api/event', {
+                method: 'POST',
+                body: JSON.stringify({
+                    indexId: Number(singleEvent.sfIndexId),
+                    eventName: singleEvent.name,
+                    AddvertiseLink: formInput.url,
+                    AddvertiseName: formInput.name,
+                    time: formInput.amount*10
+                }),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            }) 
+            
+        
         const timeToStop = formInput.amount*10*1000;
         const stopFlow = () => {
 
@@ -131,8 +139,8 @@ const AdvertisementForm = (props) => {
                 />
                 <Button classes = {`btn-warning ${classes.submit}`}>Click to add advertisement</Button>
             </form>
-            <p>*The amount you pay decides for how  <br /> long your advertisement will run. <br/> 
-            For example - If you pay 1 MATIC and <br/> 10 people are watching your stream <br /> then your advertisement will run for 10 seconds. 
+            <p>*The amount you pay decides for how long your advertisement will run.  
+            For example - If you pay 1 fDAIx and your ad will run for ~ 10 seconds. You need to have fDAIx in your account to use this function 
             </p>
             </div>
         }
