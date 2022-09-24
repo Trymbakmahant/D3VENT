@@ -2,3 +2,10 @@
     align-items: center;
     margin: 4% 35%;
 }
+
+.error {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 3%;
+}

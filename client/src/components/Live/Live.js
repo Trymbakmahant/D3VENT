@@ -47,7 +47,7 @@ const Live = (props) =>{
             <Button classes = {`btn-error btn-wide ${classes.adjust}`} onClick = {goLiveHandler}>
                 <i class="fa-regular fa-signal-stream fa-2x"></i>&nbsp; Go Live
             </Button>
-            {isWrongDate && <h1>Can't go Live now. Either you are trying to go live before or after the event date and time.</h1>}
+            {isWrongDate && <h1 className= {classes.error}>Can't go Live now. Either you are trying to go live before or after the event date and time.</h1>}
         </div>
     )
   

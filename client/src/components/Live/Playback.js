@@ -13,6 +13,10 @@ const Playback = () => {
   const showAdHandler = (shouldShow) => {
     setShowAd(shouldShow);
   }
+
+  const setUrlHandler = (url) => {
+    setImageUrl(url);
+  }
   return (
     <div className= {classes.page}>
       <iframe
@@ -25,7 +29,7 @@ const Playback = () => {
         allow="autoplay; encrypted-media; picture-in-picture"
         sandbox="allow-scripts"
       ></iframe>
-      {showAd ? <img src = "https://drive.google.com/uc?export=view&id=12RMG6m-K3ZmSX0OErfbmrSBpWgbElixq" width="270px" height= "100%"></img> : <AdvertisementForm showAd = {showAdHandler}/>}
+      {showAd ? <img src = {imageUrl} width="270px" height= "100%"></img> : <AdvertisementForm showAd = {showAdHandler} imageUrl = {setUrlHandler}/>}
     </div>
   );
 };
