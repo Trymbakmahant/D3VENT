@@ -42,9 +42,7 @@ const ParticipatedEvent = () => {
 
        let currentDate = new Date();
        currentDate = currentDate.toString();
-       currentDate = currentDate.substr(0, 15);
-
-      console.log(singleEvent.isJoinable);       
+       currentDate = currentDate.substr(0, 15);     
 
       if(singleEvent.isJoinable){
         if(eventDate === currentDate){
@@ -52,8 +50,8 @@ const ParticipatedEvent = () => {
             const singleEvent = await ctx.sharedState.getSingleEvent(id);
             await ctx.sharedState.updateSubscription(Number(singleEvent.sfIndexId), ctx.sharedState.accountAddress, 500);
             navigate(`/events/${id}/${singleEvent.playbackUri}`);
-          }
-        }
+          }else{setIsEventStarted(false)}
+        }else{setIsEventStarted(false)}
       }else{
         setIsEventStarted(false);
       }

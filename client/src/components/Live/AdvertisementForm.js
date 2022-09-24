@@ -25,7 +25,7 @@ const AdvertisementForm = (props) => {
             const singleEvent = await ctx.sharedState.getSingleEvent(id);
             // console.log(singleEvent);
             const myTimeout = setInterval(() => {
-            fetch('http://localhost:8081/api/checkAd/',  {
+            fetch('https://ancient-savannah-39465.herokuapp.com/api/checkAd/',  {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ const AdvertisementForm = (props) => {
 
         
 
-            await fetch('http://localhost:8081/api/event', {
+            await fetch('https://ancient-savannah-39465.herokuapp.com/api/event', {
                 method: 'POST',
                 body: JSON.stringify({
                     indexId: Number(singleEvent.sfIndexId),
