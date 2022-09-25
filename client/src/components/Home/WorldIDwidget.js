@@ -4,7 +4,7 @@ import { useContext } from "react";
 const WroldCoinUse = () => {
   const ctx = useContext(AppContext);
   return (
-    <div style={{ margin: "2%" }}>
+    <div style={{ margin: "15% 37%" }}>
       {" "}
       <WorldIDWidget
         actionId="wid_a4c0eed4ad6a1f24aadbcdd4fcb0ccf7" // obtain this from developer.worldcoin.org
