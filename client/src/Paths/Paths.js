@@ -10,6 +10,7 @@ import Playback from '../components/Live/Playback'
 import ParticipatedEvents from '../components/Events/ParticipatedEvents'
 import ParticipatedEvent from '../components/Events/ParticipatedEvent'
 import About from '../components/About/About'
+import AllEvents from '../components/Events/AllEvents'
 
 const Paths = () => {
   return (
@@ -24,6 +25,7 @@ const Paths = () => {
       <Route path='/events/:id/:playbackId' element={<Playback />} />
       <Route path='/participated-events' element={<ParticipatedEvents />} />
       <Route path='/participated-events/:id' element={<ParticipatedEvent />} />
+      <Route path = "/all-events" element = {<AllEvents />} />
     </Routes>
   )
 }

@@ -1,5 +1,6 @@
 .slides {
     margin-top: 7%;
+    margin-bottom: 7%;
 }
 
 .slides h3{
@@ -8,4 +9,25 @@
     margin-bottom: 4%;
     width: 25%;
     margin-left: 4%;
+    display: inline-block;
+}
+
+.slides span {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 2%;
+    width: 60px;
+    height: 60px;
+}
+
+.slides i{
+    text-align: center;
+    margin: 0 auto;
+    padding-left: 19%;
+}
+
+.slides span:hover {
+    background-color:rgba(0, 0, 0, 0.2);
+    border-radius: 100%;
+  
 }

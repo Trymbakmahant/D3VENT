@@ -4,8 +4,8 @@
 }
 
 .error {
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 3%;
+    width: 50%;
+    position: fixed;
+    margin-left:24%;
+    top:4%
 }
