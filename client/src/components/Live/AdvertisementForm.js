@@ -35,7 +35,7 @@ const AdvertisementForm = (props) => {
             })
         }).then(res => res.json())
         .then(response => {
-            if(response !== "udaa de"){
+            if(response !== "udaa de" && response !== "mission failed"){
                props.showAd(true);
                props.imageUrl(response);
             }else{
