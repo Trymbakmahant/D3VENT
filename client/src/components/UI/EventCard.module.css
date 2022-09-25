@@ -17,7 +17,7 @@
     z-index: 10;
     height: 200px;      
     border-radius: 40px 0 0 0;    
-    background-color: #f5f4f3;
+    background-color: hsl(var(--b1));
     padding-top: 1em;
     padding-left: 15%;
   }
