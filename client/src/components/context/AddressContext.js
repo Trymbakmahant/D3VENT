@@ -239,7 +239,6 @@ const AppWrapper = (props) => {
 
     const isEventJoined = async (eventIdNumber) => {
       const isJoined = await account.contract.isJoined(eventIdNumber, accountAddress);
-      console.log(isJoined);
       return isJoined;
     }
 

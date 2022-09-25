@@ -2,3 +2,10 @@
     margin: 2% 39%;
     overflow: hidden;
 }
+
+.error {
+    width: 50%;
+    position: fixed;
+    margin-left:24%;
+    top:4%
+}
