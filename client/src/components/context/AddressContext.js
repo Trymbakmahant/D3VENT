@@ -94,13 +94,15 @@ const AppWrapper = (props) => {
     const nullifier = ethers.BigNumber.from(nullifierHash);
     console.log(root1);
     try {
-      await account.contract.verifyAndExecute(
+      const tx = await account.contract.verifyAndExecute(
         signal,
         root1,
         nullifier,
         unpackedProof,
         { gasLimit: 600000 }
       );
+      await tx.wait();
+      window.location.reload();
       console.log("success");
     } catch (err) {
       console.log(err);
