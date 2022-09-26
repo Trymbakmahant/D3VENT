@@ -16,7 +16,7 @@
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="/CODE_OF_CONDUCT.md">
+        <a href="https://www.notion.so/Documentation-1caf41766ef2460296f234aa0ce05c93">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -33,7 +33,7 @@
 | D3VENT it is a web3 application where you can host any event and as well attend any event . It also allows ad providers to showcase their ad during the stream which gives profits to the host . |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-To learn more about D3VENT visit [ethglobal.com/showcase/d3vent-ed4or](https://ethglobal.com/showcase/d3vent-ed4or).
+To learn more about D3VENT visit [ethglobal.com/showcase/d3vent-ed4or](https://ethglobal.com/showcase/d3vent-ed4or) or [www.notion.so/Documentation-1caf41766ef2460296f234aa0ce05c93](https://www.notion.so/Documentation-1caf41766ef2460296f234aa0ce05c93).
 
 
 
@@ -119,4 +119,3 @@ or a test gas report:
 ```bash
 yarn test:report-gas
 ```
-
