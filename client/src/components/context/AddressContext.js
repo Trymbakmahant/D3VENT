@@ -275,10 +275,16 @@ const AppWrapper = (props) => {
        return num;
     }
 
-
+    
     const getUserEvents = async () => {
         const userEvents = await account.contract.getUserEventIds(accountAddress);
 
+    }
+
+    const getPlaybackId = async (eventId) => {
+      const singleEvent = await account.contract.getEvent(eventId);
+
+      return singleEvent.playbackUri;
     }
 
     const checkIsVerified = async () =>{
@@ -322,6 +328,7 @@ const AppWrapper = (props) => {
         checkIsVerified,
         createNewFlow,
         deleteFlow,
+        getPlaybackId
     };
 
     return (
